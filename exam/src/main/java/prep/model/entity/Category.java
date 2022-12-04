@@ -11,6 +11,11 @@ public class Category extends BaseEntity{
     private CategoryName name;
     private String description;
 
+    public Category(CategoryName name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public Category() {
     }
 @Enumerated
