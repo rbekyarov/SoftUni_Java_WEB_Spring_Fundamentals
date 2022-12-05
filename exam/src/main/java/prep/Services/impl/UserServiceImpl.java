@@ -7,6 +7,8 @@ import prep.Services.UserService;
 import prep.model.service.UserServiceModel;
 import prep.model.entity.User;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImpl implements UserService {
  private final UserRepository userRepository;
@@ -24,4 +26,14 @@ public class UserServiceImpl implements UserService {
                 .map(this.userRepository.saveAndFlush(user),
                         UserServiceModel.class);
     }
+
+    @Override
+    public UserServiceModel findByUserName(String username) {
+        return this.userRepository.findByUserName(username).map(
+                user -> this.modelMapper.map(user,UserServiceModel.class))
+                .orElse(null);
+
+    }
+
+
 }
