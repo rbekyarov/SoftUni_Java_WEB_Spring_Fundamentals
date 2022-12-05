@@ -1,15 +1,16 @@
-package prep.Services;
+package prep.Services.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import prep.Repository.CategoryRepository;
+import prep.Services.CategoryService;
 import prep.model.entity.Category;
 import prep.model.entity.CategoryName;
 
 import java.util.Arrays;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
 
@@ -26,6 +27,14 @@ public class CategoryServiceImpl implements CategoryService{
                         this.categoryRepository.save(new Category(categoryName,
                                 String.format("Description for %s", categoryName.name())));
                     });
+
+            //CategoryName[] values = CategoryName.values();
+            //for (CategoryName value : values) {
+            //  this.categoryRepository.save(new Category(value,
+            //        String.format("Description for %s", value.name())));
+            //}
         }
+
+
     }
 }
