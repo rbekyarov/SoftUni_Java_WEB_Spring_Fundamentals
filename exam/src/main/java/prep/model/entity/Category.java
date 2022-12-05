@@ -11,22 +11,24 @@ public class Category extends BaseEntity{
     private CategoryName categoryName;
     private String description;
 
+
+
+    public Category() {
+    }
+
     public Category(CategoryName categoryName, String description) {
         this.categoryName = categoryName;
         this.description = description;
     }
-
-    public Category() {
-    }
-@Enumerated
-    public CategoryName getName() {
+    @Enumerated
+    public CategoryName getCategoryName() {
         return categoryName;
     }
 
-    public void setName(CategoryName name) {
-        this.categoryName = name;
+    public void setCategoryName(CategoryName categoryName) {
+        this.categoryName = categoryName;
     }
-@Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "TEXT")
     public String getDescription() {
         return description;
     }
@@ -34,4 +36,9 @@ public class Category extends BaseEntity{
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+
+
+
 }

@@ -23,11 +23,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void addItem(ItemServiceModel itemServiceModel) {
-        CategoryServiceModel categoryServiceModel = this.categoryService
-                .findByCategoryName(itemServiceModel
-                        .getCategory().getName());
-        itemServiceModel.setCategory(categoryServiceModel);
-        this.itemRepository.saveAndFlush(this.modelMapper
-                .map(itemServiceModel, Item.class));
+       Item item = this.modelMapper
+               .map(itemServiceModel,Item.class);
+
+       item.setCategory(this.categoryService
+               .find(itemServiceModel.getCategory().getName()));
+       this.itemRepository.saveAndFlush(item);
+
     }
 }
