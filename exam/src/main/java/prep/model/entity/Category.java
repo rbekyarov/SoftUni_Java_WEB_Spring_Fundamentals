@@ -8,11 +8,11 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "categories")
 public class Category extends BaseEntity{
-    private CategoryName name;
+    private CategoryName categoryName;
     private String description;
 
-    public Category(CategoryName name, String description) {
-        this.name = name;
+    public Category(CategoryName categoryName, String description) {
+        this.categoryName = categoryName;
         this.description = description;
     }
 
@@ -20,11 +20,11 @@ public class Category extends BaseEntity{
     }
 @Enumerated
     public CategoryName getName() {
-        return name;
+        return categoryName;
     }
 
     public void setName(CategoryName name) {
-        this.name = name;
+        this.categoryName = name;
     }
 @Column(name = "description", columnDefinition = "TEXT")
     public String getDescription() {

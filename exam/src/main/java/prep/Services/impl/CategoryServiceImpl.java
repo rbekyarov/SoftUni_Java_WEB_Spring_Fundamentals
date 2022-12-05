@@ -6,6 +6,7 @@ import prep.Repository.CategoryRepository;
 import prep.Services.CategoryService;
 import prep.model.entity.Category;
 import prep.model.entity.CategoryName;
+import prep.model.service.CategoryServiceModel;
 
 import java.util.Arrays;
 
@@ -36,5 +37,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
 
+    }
+
+    @Override
+    public CategoryServiceModel findByCategoryName(CategoryName categoryName) {
+        return this.categoryRepository
+                .findByCategoryName(categoryName)
+                .map(category -> this.modelMapper.map(category, CategoryServiceModel.class))
+                .orElse(null);
     }
 }
