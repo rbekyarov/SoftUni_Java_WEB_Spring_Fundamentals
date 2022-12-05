@@ -1,40 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 
 	<head>
-        <meta charset="UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Andrey's</title>
-        <link rel="stylesheet" href="/css/reset-css.css"/>
-        <link rel="stylesheet" href="/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="/css/style.css"/>
+        <th:block th:insert="~{/fragments/head}"></th:block>
+
     </head>
 
 <body>
 <header>
       <nav class="navbar bg-dark navbar-expand-lg navbar-background bg-dark ">
-        <a class="nav-link text-white active h5" href="/">Andrey's</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
-            <ul class="navbar-nav row">
+          <th:block th:insert="~{/fragments/nav}"></th:block>
 
-                <li class="nav-item col-md-4">
-                    <a class="nav-link text-white active h6" href="/">Login</a>
-                </li>
-                <li class="nav-item col-md-4">
-                    <a class="nav-link text-white active h6" href="/" >Register</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+      </nav>
 </header>
 <main>
     <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Register</span></h1>
     <hr class="hr-3"/>
-    <form class="mx-auto mb-5 text-center w-25 bg-dark p-3 rounded" action="/" method="">
+    <form class="mx-auto mb-5 text-center w-25 bg-dark p-3 rounded"
+          th:action="@{/users/register}" method="POST">
         <div class="form-group">
             <div class="label-holder textCol d-flex justify-content-center">
                 <label for="username" class="h4 mb-2 text-white">Username</label>
@@ -77,11 +60,8 @@
     </form>
 </main>
 	<footer class="footer bg-dark  py-2">
-		<div class="container-fluid text-center">
-			<div class="footer-background h5 text-white">
-				Andrey's & Spring Team 2020.
-			</div>
-		</div>
-	</footer>
+        <th:block th:insert="~{/fragments/footer}"></th:block>
+
+    </footer>
 </body>
 </html>
