@@ -1,0 +1,75 @@
+--- Създаване на DOM елемент - .createElement ------
+
+let li = document.createElement('li');
+let div = document.createElement("div");
+let p = document.createElement("p");
+let span = document.createElement("span");
+let text = document.createTextNode(element) - връща текста на елемнета
+
+--- Добавяне на вече създаден елемент -.appendChild----
+
+domElement.appendChild(newElement); // добавя в края
+domElement.prepend(newElement); // добавя в началото
+
+
+
+---- Изтриване на DOM елементи ----
+domElement.remove() - премахва елемента
+domElement.perentNode.remove() - премахва елемента и едно ниво нагоре
+
+
+
+---- Клониране на DOM елементи ----
+let domElement= document.getElementById("my-list");
+let newElement = domElement.cloneNode(true);
+
+
+
+---- Закачане на EVENT като пропърти на елемент -----
+
+domElement.onclick = () => {
+    --JS логика при клик
+};
+
+
+---- Закачане на EVENT чрез метод addEventListener -----
+
+domElement.addEventListener('click', function() {
+    --JS логика при клик
+});
+
+
+2 Начин на изписване - функцията е извън addEventListener
+
+let funcEventHandler = (event) =>{
+    --JS логика при клик
+}
+domElement.addEventListener('click', funcEventHandler)
+
+
+------PREVENT DEFAULT -----
+Ако бутона е от тип субмит се налага да използваме preventDefault()
+
+buton.addEventListener('click', (event) => { 
+    event.preventDefault()-> браузърат няма да се презарежда 
+    event.target.perentElement
+
+
+----Премахване на EVENT ----- 
+
+domElement.removeEventListener( 'click' ,funcEventHandler);
+
+
+---- Достъп до EVENT object ----
+
+domElement.addEventListener('click', (event) => {
+    event.currentTarget.->така имаме достъп то текущия елемент
+     на който се е задейсвтало събитието
+    --JS логика при клик
+});
+
+---- Достъп през EVENT object до предишния му елемент ----
+
+let idElement = ev.target.previousElementSibling.id
+еv - параметъра на addEventListener
+id - името на самия предишен елемент

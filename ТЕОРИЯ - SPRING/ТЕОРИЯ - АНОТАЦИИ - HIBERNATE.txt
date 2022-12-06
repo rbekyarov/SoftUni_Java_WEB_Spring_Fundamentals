@@ -1,0 +1,119 @@
+
+--------PRIMARY KEY АНОТАЦИИ ----------
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private int id;
+
+--------Column  АНОТАЦИИ----------------
+@Column(name = "id") // column name
+
+--------Table  АНОТАЦИИ----------------
+@Table(name = "students") //// таблицата ще казва students
+
+--------Enum  АНОТАЦИИ----------------
+@Enumerated(EnumType.STRING)
+    private EnumClass enumClass;
+
+----------CLASS РАЗПИСАН ЧРЕЗ АНОТАЦИИ-----------
+
+@Entity - Декларираме че искаме да се менаджира от JPA !!!!!!!!!!!!!!!!!!!
+@Table(name = "students") //// таблицата ще казва students  !!!!!!!!!!!!!!!!!!!
+public class Student {
+    @Id // - primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id") // column name
+    private long id;
+    @Column(name = "name", length = 50)
+    private String name;
+
+	// Getters and setters
+}
+
+------ АБСТРАКТЕН КЛАС ----
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) !!!!!!!!!!!!!!!!!!!
+public abstract class Base {
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
+    private int id;
+
+    private String comments;
+
+    public Base() {
+    }
+// Getters and setters
+}
+
+------КЛАС КОЙТО EXTENDS-ВА  АБСТРАКТЕН КЛАС----
+
+@MappedSuperclass   !!!!!!!!!!!!!!!!!!!
+public abstract class TransportationVehicle extends Vehicle {
+    private int loadCapacity;
+    public TransportationVehicle(){ }
+    public TransportationVehicle(String type,int loadCapacity) {
+        super(type);
+        this.loadCapacity = loadCapacity;
+
+    }
+
+------------One-To-One relationship------------
+
+//table BasicShampoo  implements Shampoo //Unidirectional
+
+    @OneToOne(optional = false)
+    @JoinColumn(name = "label_id", -> Column name in table shampoos
+    referencedColumnName = "id")   -> Column name in table label
+    private BasicLabel label; //
+
+// table BasicLabel implements Label //Bidirectional
+
+    @OneToOne(mappedBy = "label",
+    targetEntity = BasicShampoo.class)
+    private BasicShampoo basicShampoo;
+
+
+------------Many-To-One relationship //Unidirectional------------
+
+//table BasicShampoo  implements Shampoo
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "batch_id", referencedColumnName = "id")
+    private ProductionBatch batch;
+
+------------One-To-Many relationship //Bidirectional------------
+
+// table ProductionBatch implements Batch
+
+    @OneToMany(mappedBy = "batch", targetEntity = BasicShampoo.class,
+	fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Shampoo> shampoos;
+
+------------Many-To-Many relationship //Unidirectional------------
+
+@Entity
+@Table(name = "shampoos")
+public abstract class BasicShampoo implements Shampoo {
+
+//…
+    @ManyToMany
+    @JoinTable(name = "shampoos_ingredients",
+    joinColumns = @JoinColumn(name = "shampoo_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
+    private Set<BasicIngredient> ingredients;
+//…
+}
+
+------------Many-To-Many relationship //Bidirectional------------
+
+    @Entity
+    @Table(name = "ingredients")
+    @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+    @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+    public abstract class BasicIngredient implements Ingredient {
+//…
+
+    @ManyToMany(mappedBy = "ingredients", targetEntity = BasicShampoo.class)
+    private Set<BasicShampoo> shampoos;
+//…

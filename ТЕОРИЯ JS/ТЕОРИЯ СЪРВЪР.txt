@@ -1,0 +1,17 @@
+----Инсталираме Express---
+npm i express
+
+-----JS SERVER CODE-----
+  ----file_name_server.js-----
+  
+const express = require('express');
+const app = express();
+
+app.get('/', (req,res) => {
+    res.send('Hello from Custom Server');
+});
+app.listen(3000);
+
+
+---Стартиране---
+node. \file_name_server.js

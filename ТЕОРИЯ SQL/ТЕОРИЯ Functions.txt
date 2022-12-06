@@ -1,0 +1,170 @@
+
+-------------------STRING Functions-------------------
+
+--------SUBSTRING()-------
+SUBSTRING(String, Position)
+SUBSTRING(String, Position, Length)
+SUBSTRING(String FROM Position FOR Length)
+пример:
+SELECT `article_id`, `author`, `content`,
+       SUBSTRING(`content`, 1, 200) AS 'Summary'
+  FROM `articles`;
+
+
+-------REPLACE-------
+REPLACE(String, Pattern, Replacement)
+пример:
+SELECT REPLACE(`title`, 'blood', '*****')
+    AS 'Title'
+  FROM `album`;
+
+-------LTRIM & RTRIM-------
+remove spaces from either side of string
+ LTRIM(String)
+ RTRIM(String)
+
+-------CHAR_LENGTH-------
+count number of characters
+ CHAR_LENGTH(String)
+
+
+-------LEFT & RIGHT-------
+get characters from beginning or end of string
+ LEFT(String, Count)
+ RIGHT(String, Count)
+пример:
+ SELECT `id`, `start`,
+        LEFT(`name`, 3) AS 'Shorthand'
+   FROM `games`;
+
+-------LOWER & UPPER-------
+change letter casing
+ LOWER(String)
+ UPPER(String)
+
+-------REVERSE-------
+reverse order of all characters in string
+REVERSE(String)
+
+-------REPEAT-------
+repeat string
+REPEAT(String, Count)
+
+-------INSERT-------
+insert substring at specific position
+INSERT(String, Position, Length, Substring)
+
+
+-------------------Numeric Functions-------------------
+ ---PI
+       SELECT PI()
+
+ ---ABS – absolute value
+             ABS(Value)
+
+ ---SQRT - SQRT(Value)
+ ---POW - POW(Value, Exponent)
+
+ --- CONV – Converts numbers between different number bases
+     CONV(Value,from_base,to_base)
+
+ ---ROUND - obtain desired precision
+     ROUND(Value, Precision)
+
+ ---FLOOR & CEILING - return the nearest integer
+     FLOOR(Value)
+     CEILING(Value)
+
+ ---SIGN – returns +1, -1 or 0, depending on value sign
+     SIGN(Value)
+
+
+-------------------Date Functions-------------------
+
+ ---EXTRACT – extract a segment from a date as an integer
+    EXTRACT(Part FROM Date)
+
+ ---TIMESTAMPDIFF - find difference between two dates
+    TIMESTAMPDIFF(Part, FirstDate, SecondDate)
+     Part can be any part and format of date or time
+       year, %Y, %y     YEAR(Date)
+       month, %M, %m    MONTH(Date)
+       day, %w, %D      DAY(Date)
+
+     пример:
+     SELECT `employee_id`, `first_name`, `last_name`,
+            TIMESTAMPDIFF(year, `hire_date`, '2017-05-31')
+         AS 'Years In Service'
+       FROM `employees`;
+
+ ---DATE_FORMAT – formats the date value according to the format
+    SELECT DATE_FORMAT('2017/05/31', '%Y %b %D') AS 'Date';
+
+ ---NOW – obtain current date and time
+    SELECT NOW();
+
+-------------------Wildcards-------------------
+
+   ---'%' - represents zero, one, or multiple characters
+   ---'_' - represents a single character
+
+   примери:
+
+     ---Find any values that start with "a"
+         WHERE customer_name LIKE 'a%';
+     ---Find any values that have "r" in second position
+         WHERE customer_name LIKE '_r%';
+     ---Finds any values that starts with "a" and ends with "o"
+         WHERE customer_name LIKE 'a%o';
+
+   --- \ – specify prefix to treat special characters as normal
+   [charlist] – specifying which characters to look for
+   [!charlist] – excluding characters
+
+    SELECT * FROM `customers`
+    WHERE `city` REGEXP '[a-c]%';
+                        "a", "b", or "c"
+
+********01. Find Book Titles
+
+use book_library;
+select  title from books
+WHERE title LIKE 'The%';
+
+********02. Replace Titles
+
+use book_library;
+SELECT REPLACE(`title`, 'The', '***')
+AS 'Title'
+FROM `books`
+WHERE title LIKE 'The%';
+
+******03. Sum Cost of All Books****
+
+SELECT ROUND (SUM(cost), 2)
+FROM books;
+
+
+04. Days Lived
+
+SELECT CONCAT_WS(' ',first_name,last_name) As 'Full Name',
+TIMESTAMPDIFF(day, born, died) as 'Days Lived'
+FROM `authors`;
+
+
+********Find Towns Starting With********
+select town_id , name from towns
+WHERE LEFT(name,1) IN ('M', 'K', 'B', 'E')
+order by name
+
+********10. Countries Holding 'A'**********
+select country_name , iso_code from countries
+WHERE country_name LIKE '%A%A%A%'
+ORDER BY iso_code;
+
+
+******User Email Providers******
+SELECT `user_name`, SUBSTRING(email,LOCATE('@', email)+1)
+    AS 'Email Provider' FROM users
+ORDER BY `Email Provider`;
+

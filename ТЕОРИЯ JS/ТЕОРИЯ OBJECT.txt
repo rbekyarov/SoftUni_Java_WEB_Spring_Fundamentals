@@ -1,0 +1,198 @@
+- -----Деклариране:---------
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 50
+};
+
+----
+const car = {type:"Fiat", model:"500", color:"white"};
+
+
+- -----Достъпване:---------
+--dot-notation
+let person = { name: 'Peter' };
+console.log(person.name); // Peter
+
+
+
+--Bracket-notation
+person['job-title'] = 'Trainer';
+console.log(person['job-title']) // Trainer
+console.log(person.job-title)    // ReferenceError
+
+--Добавяне на ново пропърти:
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 50
+};
+person.midlleName = 'Patrick';
+
+----Пълнене на Обект от масив--------
+
+function solve(arr) {
+    const obj = {};
+    while (arr.length != 0) {
+        let product = arr.shift();
+        let calories = Number(arr.shift());
+        obj[product] = calories;
+    }
+    console.log(obj)
+}
+solve(['Yoghurt', '48', 'Rise', '138', 'Apple', '52'])
+
+
+-----------Обхождане и разпечатване на обект ----------
+
+const obj = { Potato: 93, Skyr: 63, Cucumber: 18, Milk: 42 }
+for (const key in obj) {
+        console.log(`${key} -> ${obj[key]}`)
+    }
+Potato -> 93
+Skyr -> 63
+Cucumber -> 18
+Milk -> 42
+
+
+----Deleting Properties-----
+let person = {
+  name: 'Peter',
+  age: 21,
+  ['job-title']: 'Trainer'
+}
+// Object {name: 'Peter', age: 21, 'job-title': 'Trainer' }
+delete person.age; 
+// Object {name: 'Peter', 'job-title': 'Trainer' }
+console.log(person.age) // undefined
+
+--------Копиране на Обект---------
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 50
+};
+
+let copyObject = JSON.parse(JSON.stringify(person));
+
+
+-----Destructuring Syntax-----
+let department = {
+  name: 'Engineering',
+  director: 'Ted Thompson',
+  employeeCount: 25
+};
+let { name, employeeCount } = department;
+console.log(name, employeeCount); // 'Engineering' 25
+
+---------Associative Arrays----------
+ 
+ --Object.keys - връща масив от ключовете
+const phonebook = { 'Tim': '555-111',
+                    'Bill': '555-333',
+                    'Peter': '555-777' };
+const keys = Object.keys(phonebook);
+console.log(keys);
+// ['Tim', 'Bill', 'Peter']
+
+
+--Object.values - връща масив от стойностите
+const values = Object.values(phonebook);
+console.log(values);
+// ['555-111', '555-333', '555-777']
+
+
+--Object.entries - връща масив от масиви със стойностите и ключовете
+const entries = Object.entries(phonebook);
+console.log(entries);
+// [ ['Tim', '555-111'],
+//   ['Bill', '555-333'],
+//   ['Peter', '555-777'] ]
+
+entries[0] - ще върне масива на 0-вия ред ->['Tim', '555-111']
+entries[0][0] - ще върне ключа на 0-вия елемент -> 'Tim'
+entries[0][1] - ще върне стойноста на 0-вия елемент -> '555-111'
+
+
+
+ ----------------FOR-IN - итериране в обекти-------------
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: 50
+};
+for(element in person){
+  console.log(element); -- ще отпечата ключовете !
+  console.log(person[element]); -- ще отпечата стойностите !
+}
+
+
+
+------Object Methods-------
+Освен полета обектите могат да имат и функции които ги наричаме методи
+let person = {
+    firstName: "John",
+    lastName: "Doe",
+    age: function (myAge) {
+        return `My age is ${myAge}!`    }
+};
+console.log(person.age(21)); // My age is 21!
+
+
+
+--------Accessing Object Context-------
+Функциите в JavaScript имат контекст за изпълнение
+Достъпът е с ключовата дума this
+Когато се изпълнява като обектен метод, контекстът е препратка към родителския обект
+
+const person = {
+  firstName: 'Peter',
+  lastName: 'Johnson',
+  fullName() {
+    return this.firstName + ' ' + this.lastName;
+  }
+};
+console.log(person.fullName()); // 'Peter Johnson'
+
+
+
+--------Object Composition-------------
+Нестване на обекти в обект
+let student = {
+  firstName: 'Maria',
+  lastName: 'Lopez',
+  age: 22,
+  location: { lat: 42.698, lng: 23.322 }
+}
+console.log(student);
+console.log(student.location.lat);
+
+----
+let name = "Sofia";
+let population = 1325744;
+let country = "Bulgaria";
+let town = { name, population, country };
+console.log(town);
+// Object {name: "Sofia", population: 1325744,
+country: "Bulgaria"}
+
+
+
+-------JSON------------
+--JSON.parse() - конвертира от JSON към JS обект
+
+let data = '{ "manager":{"firstName":"John","lastName":"Doe"} }'; 
+let obj = JSON.parse(data);
+console.log(obj.manager.lastName) // Doe 
+
+
+--JSON.stringify() - конвертира от JS към JSON string
+
+let obj = { name: "John", age: 30, city: "New York" };
+let myJSON = JSON.stringify(obj);
+console.log(myJSON);// {"name":"John","age":30,"city":"New York"}
+------
+
+let arr = [ "John", "Peter", "Sally", "Jane" ];
+let myJSON = JSON.stringify(arr);
+console.log(myJSON); // ["John","Peter","Sally","Jane"]

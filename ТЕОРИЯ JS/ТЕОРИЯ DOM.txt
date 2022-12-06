@@ -1,0 +1,98 @@
+
+DOM дървото се състои от HTML елементи
+Елементите са JS обекти със свойства и методи
+Те могат да бъдат достъпни и модифицирани като обикновени обекти
+
+-------Вземане на елемент по ID:----
+let getElemnetByID = document.getElementById('name_id') - връща елемент по id
+let getElemnetByTagName = document.getElementByTagName('tag_name')[0] - връща първия жив елемент от колекция
+
+
+
+----модифициране на вече взет елемент------
+
+методът innerHTML - Чрез него може да вземаме и промяме ХТМЛ
+getElemnetByTagName.innerHTML += ' текст'
+
+
+
+-----Вземане на текста на даден елемент-----
+
+let ulElement = document.getElementById('items').textContent
+
+.textContent - работи за всякакви полета без input полета
+
+
+-----Вземане на числова стойност на даден елемент-----
+
+let firstNumberElement = document.getElementById('num1');
+let firstNumber = Number(firstNumberElement.value);
+
+.value - работи само за input полета
+
+
+-----Скриване на елемент -----
+
+let showMoreElement = document.getElementById('more');
+    showMoreElement.style.display = 'none';
+
+
+
+-----Показване на елемент -----
+
+    let textElement = document.getElementById('text');
+    textElement.style.display = 'inline';
+
+
+
+
+------ Изпълняване на скрипт с отваряне на браузъра------------
+    
+    <script>
+        window.onload = function() {
+            subtract();// функция
+        }
+    </script>
+
+
+
+
+----Показване и скриване на блоков елемент--------
+
+let blockElement = document.querySelector('#HTML_element_id');
+
+blockElement.style.display = 'block'; - Показване
+blockElement.style.display = 'none'; - Скриване
+
+
+
+
+
+----- CSS querySelector  --------
+
+ let button = document.querySelector('.button'); -> .class -> Селектор за Class
+ let button = document.querySelector('input[name="email"]'); -> селектор (на атрибут) на поле което има атрибут name="email"
+ let text = document.querySelector('#extra'); -> # ID ->Селектор за ID
+ let townsElement = Array.from(document.querySelectorAll('#towns li')); -> Всички li полета в ID - > Връща масив
+ 
+ document.querySelectorAll('tr td:nth-of-type(2)' - връща списък от вторите елемнти в таблица
+
+document.querySelectorAll('div input[type="text"]') 
+
+----TEXT ДЕКОРАТОР---------------------
+
+town.style.fontWeight = 'bold';
+town.style.textDecoration = 'underline';
+town.style.fontWeight = 'normal';
+town.style.textDecoration = 'none';
+
+----- ПРИЛАГАНЕ НА CSS КЛАС ВЪРХУ ЕЛЕМЕНТ -----
+
+element.className = 'select'; // прилага css стил върху елемент
+element.classList.remove('select');// премахва css стил върху елемент
+
+
+
+----- Вземане на елементи по два критерия и връщане в масив----
+
+let arr = Array.from(document.getElementById('id').querySelectorAll('input'))

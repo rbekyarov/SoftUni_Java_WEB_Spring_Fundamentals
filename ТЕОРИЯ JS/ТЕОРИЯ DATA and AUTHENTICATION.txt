@@ -1,0 +1,126 @@
+
+---------POST request------------
+
+document.getElementById('submit').addEventListener('click', async(event) => {
+        event.preventDefault();
+        let inputArr = Array.from(document.querySelectorAll('#controls input'));
+        let author = inputArr[0].value;
+        let content = inputArr[1].value;
+        try {
+            const response = await fetch('http://localhost:3030/jsonstore/messenger', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ author, content })
+            });
+
+            if (response.ok == false) {
+                const error = await response.json();
+                throw Error(error.message);
+            }
+            const data = await response.json();
+
+
+
+
+------------HTML Form Standard---------------
+
+async function onSubmit(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const email = formData.get('email');
+    const password = formData.get('password');
+
+    try {
+        const response = await fetch('http://localhost:3030/users/login', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+        if (response.ok == false) {
+            const error = await response.json();
+            throw Error(error.message);
+        }
+        const data = await response.json();
+
+        sessionStorage.setItem('accessToken', data.accessToken)
+        window.location = '/'
+
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+
+----------Authentication--------------
+
+----Registration Request
+<form method="POST" action="/users/register">
+  <input type="text" name="email" />
+  <input type="password" name="password" />
+  <input type="password" name="repass" />
+  <input type="submit" value="Register" />
+</form>
+async function onRegister(ev) {
+  const response = await fetch('/users/register', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(ev.formData);
+}
+
+
+---------Handling Authentication Token
+
+const authToken = response.authToken;
+sessionStorage.setItem('authToken', authToken);
+
+fetch('/articles', {
+    method: 'get',
+    headers: { 'X-Authorization': authToken }
+};
+
+
+------GET ACCESS Token - ----
+
+
+const response = await fetch('http://localhost:3030/users/register', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+        const data = await response.json();
+        sessionStorage.setItem('accessToken', data.accessToken)
+        window.location = '/'
+
+
+------USE ACCESS Token - ----
+
+ const response = await fetch('http://localhost:3030/data/recipes', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Authorization': token
+            },
+            body: JSON.stringify({
+                name,
+                img,
+            })
+        });
+        if (response.ok == false) {
+            const error = await response.json();
+            throw Error(error.message);
+        }
+        const data = await response.json();
+        window.location = '/';

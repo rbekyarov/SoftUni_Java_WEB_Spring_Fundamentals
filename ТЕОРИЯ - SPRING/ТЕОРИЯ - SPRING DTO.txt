@@ -1,0 +1,68 @@
+
+-----POM.XML Dependency-----
+<dependency>
+    <groupId>org.modelmapper</groupId>
+    <artifactId>modelmapper</artifactId>
+    <version>2.4.2</version>
+</dependency>
+
+
+-------Create object-------
+ModelMapper modelMapper = new ModelMapper();
+EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
+                                   Source of information -> Destination object(DTO)
+
+
+-----TypeMap Syntax in ConsoleRunner.java---
+
+ModelMapper modelMapper = new ModelMapper();
+TypeMap<EmployeeDto, Employee> typeMap = mapper.createTypeMap(EmployeeDto.class, Employee.class);
+typeMap.addMappings(m -> m.map(src -> src.getName(), Employee::setFirtsName));
+typeMap.map(employeeDto);
+
+
+--------MODEL MAPPER IN CONFIGURATION -- ApplicationBeanConfiguration.java
+@Configuration
+public class ApplicationBeanConfiguration {
+
+    @Bean
+    public ModelMapper modelMapper(){
+        ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.typeMap(GameAddDto.class , Game.class)
+                .addMappings(mapper -> mapper.map(GameAddDto::getThumbnailURL , Game::setImageThumbnail));
+
+        Converter<String , LocalDate> localDateConverter = new Converter<String, LocalDate>() {
+            @Override
+            public LocalDate convert(MappingContext<String, LocalDate> mappingContext) {
+                return LocalDate.parse(mappingContext.getSource() , DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            }
+        };
+
+        modelMapper.addConverter(localDateConverter);
+        return modelMapper;
+    }
+}
+
+------------------ЛОГИКА REGISTER USER -----------
+RUNNER;
+1) правим си поле от UserService -> private final UserService userService;
+2) // UserService userService - влиза в конструктора
+3) създаваме метод userService.registerUser(new UserRegisterDto(ВХОДНИ ДАННИ)
+
+USERSERVICE INTERFACE;
+void registerUser(UserRegisterDto userRegisterDto);
+
+USERSERVICE IMPL; registerUser(UserRegisterDto userRegisterDto)
+IMPLEMENT registerUser
+ userRegisterDto -> валидация на входните данни
+
+ Създаме поле и конструктор ModelMapper modelMapper
+ **private final ModelMapper modelMapper;
+
+ мапване на полетата USERDTO -> USER и създаваме инстанция USER
+ **User user = modelMapper.map(userRegisterDto , User.class);
+                              източник         консуматор
+ запазваме user-a в базата чрез инстанция от userRepository
+ създаваме поле userRepository, влиза в конструктора
+ userRepository.save(user);

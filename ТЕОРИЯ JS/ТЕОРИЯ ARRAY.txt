@@ -1,0 +1,242 @@
+-----ДЕКЛАРИРАНЕ НА МАСИВ:-------
+let array = [];
+let numbers = [10, 20, 30, 40, 50];
+
+------Достъпване на елемент------
+numbers[0] - > 10
+numbers[numbers.length-1] - > 50
+
+-----Вземане на дължина:-------
+numbers.length -> 5
+
+------Обхождане чрез ForEach:-------
+
+for (let number of numbers) { … }
+
+-----Destructuring Syntax:------
+
+let numbers = [10, 20, 30, 40, 50];
+let [a, b, ...elems] = numbers;
+
+console.log(a) // 10
+console.log(b) // 20
+console.log(elems) // [30, 40, 50] 
+
+
+
+-----Обхождане на масив с foreach и index----
+ 
+ //arr.forEach((x, i) => {
+        if (i % 2 != 0) {
+            .....
+        }
+   });
+
+------ВГРАДЕНИ МЕТОДИ:--------
+
+
+- Pop - връща и изтрива последния елемент
+let nums = [10, 20, 30, 40, 50, 60, 70];
+console.log(nums.pop());  // 70
+
+
+ - Push - добавя в елемент в края на масива и връща новата дължина;
+ let nums = [10, 20, 30, 40, 50, 60, 70];
+console.log(nums.length);   // 7
+console.log(nums.push(80)); // 8 (nums.length)
+
+
+ ---- Комбинацията -   Push и Pop - Масива работи като Stack - и двата метода работят с края на масива - -- 
+
+
+- Shift - премахва първия елемент и връща стойноста му;
+let nums = [10, 20, 30, 40, 50, 60, 70];
+console.log(nums.length); // 7
+console.log(nums.shift()); // 10 (removed element)
+
+
+-Unshift - добавя един или повече елемента в началото на масива и връща новата дължина.
+let nums = [40, 50, 60];
+console.log(nums.length);       // 3
+console.log(nums.unshift(30));  // 4 (nums.length)
+console.log(nums.unshift(10,20)); // 6 (nums.length)
+
+
+---- Комбинацията -   Shift и Push - Масива работи като Queue/Опашка - премахва в началото и добавя в края - -- 
+
+
+- Splice - премахва или заменя елемент/и и добавя нови елементи
+let nums =[1,3,4,5,6];
+nums.splice(1,0,2);// на индекс 1 ще трием 0 елементи и ще обавим числото 2 
+console.log(nums); // [ 1, 2, 3, 4, 5, 6 ]
+
+ - първия параметър показва индекса който ще манипулираме
+ - втория параметър показва колко елемента искаме да изтрием
+ - третия параметър показва стойността която искаме да добавим
+
+ако е (1,1)
+let newArr = nums.splice(1,1) - връща нов масив
+console.log(newArr); // [ 1 ]
+console.log(nums); // [ 1, 3, 4, 5, 6 ]
+
+nums.splice(4, 1, 19); // replaces 1 element at index 4
+console.log(nums); // [ 1, 2, 3, 4, 19, 6 ]
+let el = nums.splice(2, 1); // removes 1 element at index 2
+console.log(nums); // [ 1, 2, 4, 19, 6 ]
+console.log(el); // [ 3 ]
+
+
+- Fill - Запълва всички елементи на масив от начален индекс до краен индекс със статична стойност
+let arr = [1, 2, 3, 4];
+// fill with 0 from position 2 until position 4
+console.log(arr.fill(0, 2, 4)); // [1, 2, 0, 0]
+// fill with 5 from position 1
+console.log(arr.fill(5, 1)); // [1, 5, 5, 5]
+console.log(arr.fill(6)); // [6, 6, 6, 6]
+
+
+-Reverse - Обръща масива
+let arr = [1, 2, 3, 4];
+arr.reverse();
+console.log(arr); // [ 4, 3, 2, 1 ]
+
+
+-Sorting Arrays - sort()
+
+
+ -Compare Functions
+ let nums = [20, 40, 10, 30, 100, 5];
+nums.sort((a, b) => a - b); // Compare elements as numbers
+console.log(nums.join('|')); // 5|10|20|30|40|100
+
+
+ - localeCompare() 
+let words = ['nest', 'Eggs', 'bite', 'Grip', 'jAw'];
+words.sort((a, b) => a.localeCompare(b));
+// ['bite', 'Eggs', 'Grip', 'jAw', 'nest']
+
+
+- Join
+let elements = ['Fire', 'Air', 'Water'];
+console.log(elements.join()); // "Fire,Air,Water"
+console.log(elements.join('')); // "FireAirWater"
+console.log(elements.join('-')); // "Fire-Air-Water"
+console.log(['Fire'].join(".")); // Fire
+
+
+-Concat - обединява два или повече масива в нов масив, като не променя старите
+const num1 = [1, 2, 3];
+const num2 = [4, 5, 6];
+const num3 = [7, 8, 9];
+const numbers = num1.concat(num2, num3);
+console.log(numbers); //  [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+-Slice - връща плитко копие на част от масив в нов обект на масива, избран от началото до края (краят не е включен)
+let fruits = ['Banana', 'Orange', 'Lemon', 'Apple', 'Mango'];
+let citrus = fruits.slice(1, 3);
+let fruitsCopy = fruits.slice();
+// fruits contains ['Banana', 'Orange', 'Lemon', 'Apple', 'Mango']
+// citrus contains ['Orange', 'Lemon']
+
+
+- Includes - Определя дали масивът съдържа определен елемент, връщайки true или false според случая
+// array length is 3
+// fromIndex is -100
+// computed index is 3 + (-100) = -97
+let arr = ['a', 'b', 'c'];
+arr.includes('a', -100); // true
+arr.includes('b', -100); // true
+arr.includes('c', -100); // true
+arr.includes('a', -2); // false
+
+
+- IndexOf - връща първия индекс, при който даден елемент може да бъде намерен в масива
+const beasts = ['ant','bison','camel','duck','bison'];
+console.log(beasts.indexOf('bison')); // 1
+// start from index 2
+console.log(beasts.indexOf('bison', 2)); // 4
+console.log(beasts.indexOf('giraffe')); // -1
+
+
+- ForEach - итерира чрез Arrow
+const items = ['item1', 'item2', 'item3'];
+const copy = [];
+// For loop
+for (let i = 0; i < items.length; i++) {
+  copy.push(items[i]);
+}
+// ForEach
+items.forEach(item => { copy.push(item); });
+
+
+-Some - проверява дали поне един елемент в масива преминава теста, реализиран от предоставената функция - returns a Boolean value
+let array = [1, 2, 3, 4, 5];
+let isEven = function(element) {
+  // checks whether an element is even
+  return element % 2 === 0;
+};
+console.log(array.some(isEven)); //true
+
+
+- Find -Връща първата намерена стойност в масива, ако елемент в масива удовлетворява предоставената функция за тестване или недефиниран, ако не е намерен
+let array1 = [5, 12, 8, 130, 44];
+let found = array1.find(function(element) {
+  return element > 10;
+});
+console.log(found); // 12
+
+
+- Filter - Създава нов масив само с филтрирани елементи
+Извиква предоставена функция за обратно извикване веднъж за всеки елемент в масив
+Не мутира масива, в който е извикан
+
+let fruits = ['apple', 'banana', 'grapes', 'mango', 'orange'];
+ // Filter array items based on search criteria (query)
+function filterItems(arr, query) {
+  return arr.filter(function(el) {
+      return el.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+  });
+};
+console.log(filterItems(fruits, 'ap')); // ['apple', 'grapes']
+
+
+-Map - Създава нов масив с резултатите от извикване на предоставена функция за всеки елемент в извикващия масив
+let numbers = [1, 4, 9];
+let roots = numbers.map(function(num, i, arr) {
+	return Math.sqrt(num)
+});
+// roots is now [1, 2, 3]
+// numbers is still [1, 4, 9]
+
+
+-Reduce - Методът изпълнява функция за намаляване на всеки елемент от масива, което води до една изходна стойност
+const array1 = [1, 2, 3, 4];
+const reducer = 
+(accumulator, currentValue) => accumulator + currentValue;
+console.log(array1.reduce(reducer)); // 10
+console.log(array1.reduce(reducer, 5)); // 15
+
+
+
+
+------МАТРИЦИ-------
+
+let arr = [[4, 5, 6],
+           [6, 5, 4],
+           [5, 5, 5]];
+
+ОТПЕЧАТВАНЕ:
+
+ - Отпечатва всеки ред от масива на отделен ред:
+arr.forEach(printRow);
+function printRow(row){
+    console.log(row);
+    row.forEach(printNumber);
+}
+
+
+- Отпечатва всеки елемент от масива на отделен ред
+function printNumber(num){
+    console.log(num);
+};

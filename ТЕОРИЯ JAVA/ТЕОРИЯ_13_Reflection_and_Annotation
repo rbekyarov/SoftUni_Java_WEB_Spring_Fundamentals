@@ -1,0 +1,37 @@
+Metaprogramming:
+Техника на програмиране, при която компютърните програми имат способността
+да третират програмите като свои данни.
+
+Reflection:
+Способността на езика за програмиране да бъде собствен метаезик
+Програмите могат да проверяват информация за себе си.
++
+Кодът да стане по-разширяем
+За да намалите значително дължината на кода
+По-лесна поддръжка
+По-лесно тестване
+
+-
+Ако е възможно да се извърши операция без да се използва Reflection, тогава е за предпочитане да се избягва използването й
+Минуси от използването на Reflection
+Изпълнение режийни разходи
+Ограничения за сигурност
+Излагане на вътрешна логика
+
+Class myObjectClass = MyObject.class;
+Class myClass = Class.forName(className);
+String className = aClass.getName();
+String simpleClassName = aClass.getSimpleName();
+Class className = aClass.getSuperclass();
+Class[] interfaces = aClass.getInterfaces();
+Интерфейсите също са представени от обекти Class в Java Reflection
+Връщат се само интерфейсите, специално декларирани, внедрени от даден клас
+
+
+Constructors, Fields and Methods:
+- публични конструктори
+Constructor[] ctors = aClass.getConstructors();
+- връша всички конструктори
+Constructor[] ctors = aClass.getDeclaredConstructors();
+ - връща конструктор по параметър
+ Constructor ctor = aClass.getConstructor(String.class);

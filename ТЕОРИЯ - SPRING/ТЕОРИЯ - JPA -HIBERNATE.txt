@@ -1,0 +1,47 @@
+--------JAVA PERSISTENCE API -----(JPA)--------------------------------
+-----------ОСНОВНИ АНОТАЦИИ------------
+@Entity  - Декларира класа като обект или таблица
+@Table  - Декларира име на таблица
+@Basic -  Посочва изрично неограничени полета
+@Transient - Указва свойството, което не е постоянно, но не искаме да се съхранява в базата данни
+@ID - указва че дадената колона ще ПК
+      @GeneratedValue - добавя аутоинкремент функционалста
+@Column - име и тип на полето
+
+-----------JPAtoPOM.xml----------------------
+        <dependency>
+                    <groupId>jakarta.persistence</groupId>
+                    <artifactId>jakarta.persistence-api</artifactId>
+                    <version>3.1.0</version>
+                </dependency>
+
+
+
+
+
+----------persistence.xml-----------
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="school">
+        <properties> <property name = "hibernate.connection.url" value="jdbc:mysql://localhost:3306/school?createDatabaseIfNotExist=true"/>
+            <property name = "hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name = "hibernate.connection.username" value="root"/>
+            <property name = "hibernate.connection.password" value="Aa@153759"/>
+            <property name = "hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+            <property name = "hibernate.hbm2ddl.auto" value="update"/>
+            <property name = "hibernate.show_sql" value = "true" />
+        </properties>
+    </persistence-unit>
+</persistence>
+
+
+--------------------JPA Write Data Methods ---------------------------------
+persist() -> (SQL INSERT)
+remove()  -> (SQL DELETE by primary key)
+refresh() -> (SQL SELECT by primary key)
+detach()  -> премахва обекта от контекста
+merge()   –> синхронизира състоянието с контекста
+contains()-> определя дали даден обект се управлява от контекста
+flush()   -> записва промените от контекста в базата данни
+find() -> find(Student.class, 2); - връща втора колона
+

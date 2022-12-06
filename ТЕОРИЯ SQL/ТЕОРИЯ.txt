@@ -1,0 +1,64 @@
+-----------Създаване на база ----------
+CREATE database `basename`;
+
+
+-----------Създаване на таблица ---------
+CREATE TABLE `tablename` (
+	`id` INT PRIMARY KEY AUTO_INCREMENT,
+    `name` VARCHAR(50)
+    );
+
+----------Добавяне на колона-----------
+ALTER TABLE `tablename`
+ADD COLUMN `column` INT;
+
+----------Промяна на колона--------
+ALTER table employees
+modify column `middle_name` VARCHAR(100);
+
+---------Добавяне на връзка между таблици-----------
+ALTER TABLE `tablename1`
+ADD CONSTRAINT `fk_tablename1_tablename2`
+FOREIGN KEY `tablename1`(`town_id`)
+REFERENCES `tablename2` (`id`);
+
+---------Пълнене на таблица---------
+INSERT INTO `towns` (`id`, `name`)
+VALUES
+( 1, 'Sofia'),
+( 2, 'Plovdiv'),
+( 3, 'Varna');
+
+
+---Change Primary Key---
+ALTER TABLE `users`
+DROP PRIMARY KEY,
+ADD CONSTRAINT pk_users2
+PRIMARY KEY `users`(`id`, `username`);
+
+---------Задаване на дефолтна стойност на колона---------
+ALTER TABLE `users`
+CHANGE COLUMN `last_login_time` `last_login_time`
+DATETIME  DEFAULT NOW();
+
+---------Set Unique Field---------
+ALTER TABLE `users`
+CHANGE COLUMN `username` `username` VARCHAR(50) UNIQUE;
+
+---------Select All Fields---------
+SELECT * FROM `towns`;
+
+---------Select All Fields and Order ---------
+SELECT * FROM `towns`
+ORDER BY `name`;
+
+
+--------- Select Some Fields ---------
+SELECT `first_name`, `last_name`, `job_title`, `salary`
+FROM `employees`;
+
+
+--------- Ъпдейт на колона ---------
+UPDATE `employees`
+SET `salary` = `salary` * 1.1;
+SELECT `salary` FROM `employees`;

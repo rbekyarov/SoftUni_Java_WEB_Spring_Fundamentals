@@ -1,0 +1,27 @@
+ --------------Spring Repository-------------
+
+ Абстракция за значително намаляване на количеството шаблонен код,
+ необходим за внедряване на слоеве за достъп до данни
+ Извършване на CRUD операции
+ Автоматично генерира JPQL/SQL код
+ Силно персонализиран
+
+ StudentRepository.java
+ @Repository
+ public interface StudentRepository extends JpaRepository<Student, Long> {
+    List<Student> findByMajor(Major major);
+}
+
+ -----SELECT s.*
+        FROM students AS s
+       INNER JOIN majors AS m
+          ON s.major_id = m.id
+       WHERE m.id = ?
+
+Keyword:      Sample:
+And         -> findByLastnameAndFirstName
+Or          -> findByLastnameOrFirstname
+Between     ->  findByStartDateBetween
+LessThan    ->  findByAgeLessThan
+Containing  ->  findByFirstnameContaining
+In          -> findByAgeIn(Collection<Age> ages

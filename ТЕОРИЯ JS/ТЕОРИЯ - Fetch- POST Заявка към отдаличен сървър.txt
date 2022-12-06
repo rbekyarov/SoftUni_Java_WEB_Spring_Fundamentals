@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка към отдаличен Сървър</title>
+</head>
+
+<body>
+
+    <ul id="list" style="font-weight:bold">List of Films on Server:
+        <p></p>
+        <button id="load-btn">Load Data</button>
+        <p></p>
+        <button id="udate-btn">Update Data</button>
+        <input type="text" name="title" id="title" />
+
+    </ul>
+
+    <script>
+        let dataUrl = 'http://localhost:3030/jsonstore/movies'
+        let buttonUpd = document.getElementById('udate-btn');
+        let button = document.getElementById('load-btn');
+        let titleE = document.getElementById('title')
+        let movieList = document.getElementById('list')
+        button.addEventListener('click', loadData);
+        buttonUpd.addEventListener('click', UpdateData);
+
+        function UpdateData() {
+            let title = titleE.value;
+            fetch(`${dataUrl}`, {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title
+                    })
+                })
+                .then(res => res.json())
+                .then(movie => {
+                    let movieE = document.createElement('li');
+                    movieE.textContent = movie.title;
+                    movieList.appendChild(movieE);
+                })
+        }
+
+        function loadData() {
+            fetch(dataUrl)
+                .then(result => result.json())
+                .then(data => {
+                    Object.values(data).forEach(movie => {
+                        let movieE = document.createElement('li');
+
+                        if (movieE.textContent == '') {
+                            let p = document.createElement('p');
+
+                            movieE.textContent = `${movie.title}`;
+
+                            movieList.appendChild(movieE);
+                            p.textContent = movie.genre;
+                            p.style.color = 'blue'
+                            movieE.appendChild(p)
+                        }
+
+                    })
+                })
+        }
+    </script>
+</body>
+
+</html>

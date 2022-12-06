@@ -1,0 +1,53 @@
+МОДУЛИ
+<script src="app.js" type="module"></script>
+
+--------Export Syntax----
+
+export function updateScoreboard(newResult) { … }
+export const homeTeam = 'Tigers';
+export { addResult, homeTeam as host };
+
+
+--------Import Syntax ------
+import {addResult, homeTeam} from './scoreboard.js';
+addResult(); 
+
+import * as scoreboard from './scoreboard.js';
+scoreboard.updateScore(); 
+
+Module Best Practices:
+Разделете кода в модули по свързани функционалности
+Стремете се към висока кохезия
+Изнасяйте само това, което е необходимо за потребителите
+Предпочитайте именувани експорти пред стандартни
+Не извършвайте операции при експортиране
+
+
+SPA Implementation Requirements:
+Приложението има множество изгледи
+Всички изгледи споделят общо състояние
+Използва се модулен код
+Страницата не се презарежда при смяна на изгледи
+Съдържанието се зарежда чрез AJAX
+Ново съдържание се създава от JavaScript
+
+Съвременните SPA приложения използват концепции като шаблони и маршрутизиране
+Всеки изглед се управлява от собствен модул
+Съдържа код за извличане и показване на свързано съдържание
+Единичен скрипт служи като входна точка на приложението
+Импортира и инициализира останалите модули
+Държи и управлява споделено (глобално) състояние
+
+import homePage from './home.js';
+import catalogPage from './catalog.js';
+// Load and initialize all modules
+
+
+
+Group DOM Changes
+Манипулирането на DOM дървото е процес, изискващ висока производителност
+
+const fragment = document.createDocumentFragment();
+// Create and populate new elements
+fragment.appendChild(/* element reference */);
+document.body.appendChild(fragment); // Add to body

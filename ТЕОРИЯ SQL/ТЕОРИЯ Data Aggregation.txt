@@ -1,0 +1,74 @@
+
+---------------GROUP BY------------
+пример:
+SELECT e.`job_title`, count(employee_id)
+FROM `employees` AS e
+GROUP BY e.`job_title`;
+
+пример:
+SELECT e.`department_id`,
+SUM(e.`salary`) AS 'Total Salary'
+FROM `employees` AS e
+GROUP BY e.`department_id`
+ORDER BY e.`department_id`;
+
+
+---------------MIN()------------
+
+пример:
+SELECT e.`department_id`,
+ MIN(e.`salary`) AS 'MinSalary'
+FROM `employees` AS e
+GROUP BY e.`department_id`;
+
+
+---------------COUNT()------------
+
+пример:
+SELECT e.`department_id`,
+  COUNT(e.`salary`) AS 'Salary Count'
+FROM `employees` AS e
+GROUP BY e.`department_id`;
+
+
+---------------SUM()------------
+
+пример:
+SELECT e.`department_id`,   SUM(e.`salary`) AS 'TotalSalary'
+FROM `employees` AS e
+GROUP BY e.`department_id`;
+
+
+---------------MAX()------------
+
+пример:
+SELECT e.`department_id`,  MAX(e.`salary`) AS 'MaxSalary'
+FROM `employees` AS e
+ GROUP BY e.`department_id`;
+
+---------------MAX()------------
+
+пример:
+SELECT e.`department_id`,  MIN(e.`salary`) AS 'MinSalary'
+FROM `employees` AS e
+GROUP BY e.`department_id`;
+
+---------------AVG()------------
+
+пример:
+SELECT e.`department_id`,
+  AVG(e.`salary`) AS 'AvgSalary'
+FROM `employees` AS e
+GROUP BY e.`department_id`;
+
+---------------HAVING------------
+Клаузата HAVING се използва за филтриране на данни въз основа на обобщени стойности.
+Не можем да го използваме без групиране преди това
+Всички агрегатни функции в клаузата "HAVING" и в израза "SELECT" се изпълняват само веднъж
+За разлика от HAVING, клаузата WHERE филтрира редове преди агрегацията
+
+пример:
+SELECT e.`department_id`, SUM(e.salary) AS 'TotalSalary'
+FROM `employees` AS e
+GROUP BY e.`department_id`
+HAVING `TotalSalary`< 25000;

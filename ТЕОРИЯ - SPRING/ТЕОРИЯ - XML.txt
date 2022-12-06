@@ -1,0 +1,81 @@
+
+------------JAXB-POM.xml---------------
+<dependency>
+    <groupId>javax.xml.bind</groupId>
+    <artifactId>jaxb-api</artifactId>
+</dependency>
+
+
+------------DTO CLASS---------------
+
+  ---AddressDto.java--
+@XmlRootElement(name = "address")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class AddressDto implements Serializable {
+    @XmlAttribute(name = "country")
+    private String country;
+
+    @XmlElement(name = "city")
+    private String city;
+}
+
+
+-------------------EXPORT SINGLE OBJECT FROM DTO TO XML FILE-------------
+ ---UserClass:
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
+public class User {
+    @XmlElement(name = "name")
+    private String name;
+    @XmlElement(name = "age")
+    private Integer age;
+    public String getName() { return name; }
+// Constructor, getters, setters
+
+ ---RUNNER CLASS:
+  JAXBContext context = JAXBContext.newInstance(User.class);
+  Marshaller marshaller = context.createMarshaller();
+  marshaller.marshal(user, new File("users.xml"));
+
+-------------------EXPORT Multiple OBJECT FROM DTO TO XML FILE-------------
+--AddressesDto.java
+@XmlRootElement(name = "addresses")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class AddressesDto {
+
+    @XmlElement(name = "address")
+    private List<AddressDto> addressJsonDtos;
+}
+
+---RUNNER CLASS:
+AddressesDto addressDtos = new AddressesDto();
+jaxbMarshaller.marshal(addressesDto, bfw);
+
+------------------------------------IMPORT SINGLE OBJECT FROM DTO TO XML FILE-------------
+---addressDto
+@XmlRootElement(name = "address")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class AddressDto implements Serializable {
+
+    @XmlAttribute(name = "country")
+    private String country;
+
+    @XmlElement(name = "city")
+    private String city;
+}
+
+---RUNNER CLASS:
+JAXBContext jaxbContext = JAXBContext.newInstance(AddressDto.class);
+InputStream inputStream = getClass().getResourceAsStream("/files/input/xml/address.xml");
+BufferedReader bfr = new BufferedReader(new InputStreamReader(inputStream));
+Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+AddressDto addressDto = (AddressDto) unmarshaller.unmarshal(bfr);
+
+
+-------------------IMPORT Multiple OBJECT FROM DTO TO XML FILE-------------
+
+JAXBContext jaxbContext = JAXBContext.newInstance(AddressesDto.class);
+InputStream inputStream = getClass().getResourceAsStream("/files/input/xml/addresses.xml");
+BufferedReader bfr = new BufferedReader(new InputStreamReader(inputStream));
+Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+AddressesDto addressesDto = (AddressesDto) unmarshaller.unmarshal(bfr);

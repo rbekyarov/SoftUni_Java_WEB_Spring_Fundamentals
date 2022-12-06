@@ -1,0 +1,81 @@
+МИКСИРАНЕ НА JS и HTML
+
+- js е вкаран директно в кода
+        <!DOCTYPE html>
+        <html>
+        <body>
+        <h1>JavaScript in the HTML page</h1>
+        <script>
+            for (let i=1; i<=10; i++) {
+            document.write(`<p>${i}</p>`);
+            }
+        </script>
+        </body>
+        </html>
+
+- js се извиква от файл
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <script src="numbers.js">
+        </script>
+        </head>
+        <body>
+        <input type="submit"
+        onclick="printRandNum()" />
+        </body>
+        </html>
+
+---JS FILE numbers.js---
+function printRandNum() {
+  let num = Math.round(
+    Math.random() * 100);
+  document.body.innerHTML +=
+    `<div>${num}</div>`;
+}
+--------------
+
+
+
+
+ДЕКЛАРИРАНЕ НА ФУНКЦИИ: 
+ - Function declaration:
+    function walk() {
+    console.log("walking");
+    }
+
+ - Function expression
+    const walk = function () {
+    console.log("walking");
+}
+
+ - Arrow functions
+   const walk = () => {
+    console.log("walking");
+}
+
+Функция която връща параметър:
+
+function identity(param){
+  return param;
+}
+
+JavaScript has a large standard library
+Math, Number, Date, RegExp, JSON 
+
+
+Truthy and Falsy Values:
+
+logTruthiness (3.14);      //Truthy!
+logTruthiness ({});        //Truthy!
+logTruthiness (NaN);       //Falsy.
+logTruthiness ("NaN");     //Truthy!
+logTruthiness ([]);        //Truthy!
+logTruthiness (null);      //Falsy.
+logTruthiness ("");        //Falsy.
+logTruthiness (undefined); //Falsy.
+logTruthiness (0);         //Falsy.
+
+Връщане на тип на променливата - typeof:
+const val = 5; 
+console.log(typeof val);    // number

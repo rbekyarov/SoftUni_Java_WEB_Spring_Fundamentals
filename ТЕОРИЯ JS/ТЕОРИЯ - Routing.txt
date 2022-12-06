@@ -1,0 +1,59 @@
+Navigation for Single-Page Applications
+Рутерът зарежда подходящото съдържание, когато местоположението се промени
+напр. когато потребителят въведе ръчно адрес
+Обратно, промяна в съдържанието се отразява в адресната лента
+напр. когато потребителят кликне върху връзка
+
+What is page.js?
+
+Инсталация:
+npm install page
+
+Използване:
+page('/', index);	// Register home route
+page('*', notfound);	// Register catch-all (404)
+page.start();		// Activate router
+
+Маршрутите се регистрират чрез шаблон за съвпадение и обратно извикване:
+page('/catalog', catalogView);
+
+
+Образецът за съвпадение може да бъде низ, URL адрес или RegExp
+Манипулаторът на маршрута (обратно извикване) ще получи два параметъра
+контекстен обект с информация за параметри и състояние
+следващо обратно извикване, използвано при верижно обработчици на маршрути
+
+function catalogView(ctx, next) {
+  // fetch data, render template, handle form, etc.
+}
+
+Глобовите модели на URL могат да съответстват на динамични части на URL адреса
+
+page('/catalog/:id', detailsView);
+// match any route, following /catalog
+
+
+URL параметърът може да бъде достъпен от контекста
+function detailsView(ctx, next) {
+  console.log(ctx.params.id);
+}
+
+Programmatic Redirect:
+page.redirect('/home', '/catalog');
+// navigating to /home will be redirected to /catalog
+
+Navigate to a page programatically
+page.redirect('/login');
+
+Route handlers can be chained
+page('/catalog/:id', loadData, detailsView);
+
+async function loadData(ctx, next) {
+  const data = await fetchProduct(ctx.params.id);
+  ctx.product = data;
+  next();
+}
+
+
+
+

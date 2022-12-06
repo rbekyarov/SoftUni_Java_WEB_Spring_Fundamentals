@@ -1,0 +1,99 @@
+
+FOLDERS and FILES SPRING PROJECT
+
+ ---MODELS---
+     --ENTITIES--
+        --- BaseEntity Abstract Class
+              @MappedSuperclass
+
+        --- Class Entity (extends BaseEntity)
+             @Entity
+             @Table
+             @Column(name = ...)
+             @Enumerated(EnumType.EnumNAME)
+             @ManyToMany
+             @ManyToOne
+
+     --CONSTANTS classes--
+     --ENUMS classes--
+ ---REPOSITORIES
+  --- REPOSITORY ENTITY INTERFACE
+       -@Repository (annotation)
+       -(extends JpaRepository<CLASS, TYPE ID ON CLASS>)
+       -(define methods)
+       ТУК дефинираме заявките към базата посредством Спринг
+       например : List<Shampoo> findByBrand(String brand);
+
+ ---SERVICE
+    -- SERVICE INTERFACE ENTITY
+         (define methods)
+         например : List<Shampoo> imeNaMetoda(String brand);
+    -- SERVICE CLASS.IMPL ENTITY (implements INTERFACE ENTITY)
+         -@Service
+         -Fields:
+         -private final CLASSRepository classRepository and other repo
+         -Create Constructor on Fields
+         -methods implements from service interface and repository
+          например : List<Shampoo> imeNaMetoda(String brand){
+                     return classRepository findByBrand (brand)
+          }
+
+ --- MAIN PROJECT CLASS
+ --- RUNNER CLASS
+     @Component
+     (implements CommandLineRunner)
+     -Fields: create fields from Services Interface -
+       example :( private final ClassService classService);
+     - create Constructor
+     - methods implements
+       например : classService.imeNaMetoda()
+ ---RESOURCES
+   -- IMPORT DATA
+   -- application.properties
+-----POM.XML-------
+
+ <parent>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-starter-parent</artifactId>
+         <version>2.7.5</version>
+         <relativePath/> <!-- lookup parent from repository -->
+ </parent>
+ <dependencies>
+             <dependency>
+                 <groupId>org.springframework.boot</groupId>
+                 <artifactId>spring-boot-starter-data-jpa</artifactId>
+             </dependency>
+
+             <dependency>
+                 <groupId>com.mysql</groupId>
+                 <artifactId>mysql-connector-j</artifactId>
+                 <scope>runtime</scope>
+             </dependency>
+             <dependency>
+                 <groupId>org.springframework.boot</groupId>
+                 <artifactId>spring-boot-starter-test</artifactId>
+                 <scope>test</scope>
+             </dependency>
+</dependencies>
+
+
+2.---------application.properties-------
+
+#Data Source Properties
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/spring_data_intro?useSSL=false&createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=Aa@153759
+#JPA Properties
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.properties.hibernate.format_sql=TRUE
+spring.jpa.hibernate.ddl-auto=update
+###Logging Levels
+# Disable the default loggers
+logging.level.org=WARN
+logging.level.blog=WARN
+#Show SQL executed with parameter bindings
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor=TRACE
+
+

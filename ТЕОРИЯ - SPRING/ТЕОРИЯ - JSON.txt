@@ -1,0 +1,91 @@
+
+------------------------POM----------------------
+
+ <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+ </dependency>
+
+------------------------ApplicationBeenConfiguration*----------------------
+ @Bean
+     public Gson gson(){
+         return new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+
+--------------------CREATE INSTANTS---------------
+
+Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation() // - excludes fields without @Expose annotation
+                .setPrettyPrinting() //- aligns and justifies the created JSON format
+                .create(); // - creates an instance of Gson
+
+
+---------------------ЕКСПОРТ НА JSON ДАННИ--this.gson.toJson---------
+
+пример: имаме клас  AddressJsonDto.java който е със следните полета
+public class AddressJsonDto implements Serializable {
+    @Expose
+    private String country;
+    @Expose
+    private String city;
+    @Expose
+    private String street;
+}
+
+парсване на данни: клас - JsonParser.java
+AddressJsonDto addressJsonDto = new AddressJsonDto(); създаваме си инстанция
+addressJsonDto.setCountry("Bulgaria"); сетваме стройности в инстанцията
+addressJsonDto.setCity("Sofia");
+addressJsonDto.setStreet("Mladost 4");
+***String content = this.gson.toJson(addressJsonDto);****
+
+и получаме:
+{
+  "country": "Bulgaria",
+  "city": "Sofia",
+  "street": "Mladost 4"
+}
+
+
+---------------------ИМПОРТ НА JSON ДАННИ в нашия КОД----this.gson.fromJson-------
+
+пример: имаме клас  AddressJsonDto.java който е със следните полета
+
+public class AddressJsonDto implements Serializable {
+
+    @Expose
+    private String country;
+
+    @Expose
+    private String city;
+
+    @Expose
+    private String street;
+}
+***AddressJsonDto addressJsonDto =
+                   this.gson.fromJson("/files/input/json/address.json", AddressJsonDto.class);***
+
+файла address.json е със следното съдържание
+{
+  "country": "Bulgaria",
+  "city": "Sofia",
+  "street": "Mladost 4"
+}
+
+
+АКО ФАЙЛА Е С МНОГО ОБЕКТИ: СЕ ИЗПОЛВА СТРУКТУРА ОТ ДАННИ
+
+AddressJsonDto[] addressJsonDtos =
+                this.gson.fromJson("/files/input/json/addresses.json", AddressJsonDto[].class);
+[
+  {
+    "country": "Bulgaria",
+    "city": "Sofia",
+    "street": "Mladost 4"
+  },
+  {
+    "country": "Spain",
+    "city": "Barcelona",
+    "street": "Las Ramblas"
+  }
+]
+

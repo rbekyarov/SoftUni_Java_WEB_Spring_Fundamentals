@@ -1,0 +1,162 @@
+-----------------------------------AJAX--------------------------
+Зареждане на динамични данни от отдаличен сървър в бекграунда на страницата.
+Страницата не се презарежда, а синхронно получава данни след като се зареди хтмл съдърцанието.
+Два типа  - данните идват като html или като обекти в json формат.
+ - Partial page rendering - рендерира html съдържние
+ - JSON service - получава json обекти и ги зарежда
+
+-------------------Using the XMLHttpRequest Object-----------------------
+
+XMLHttpRequest - e стар начин за Ajax reqiest И respond 
+Пример:
+
+function loadRepos() {
+
+    let url = 'https://api.github.com/users/testnakov/repos';
+    const httpRequest = new XMLHttpRequest();
+    httpRequest.addEventListener('readystatechange', function() {
+        if (httpRequest.readyState == 4 && httpRequest.status == 200) {
+            document.getElementById("res").textContent = httpRequest.responseText;
+        }
+    });
+    httpRequest.open("GET", url);
+    httpRequest.send();;
+}
+
+-----------Asynchronous Programming in JS-------------
+
+---Callbacks----
+Фунцията когато се активира влиза в Event Queue и като стане първа в опашката се изпълнява
+
+
+----Promises-----
+Вместо функция при promises се създава обект от класа Promises
+new Promise(executor);
+обекта има три състояния - 
+Pending - в изчакване
+Fulfilled - действието се е изпълнило и е върнало резултат
+Failed - действието не се е изпълнило и е върнало грешка
+---Promise.then()---
+
+new Promise(function(resolve, reject) {
+  setTimeout(function() { 
+    resolve('done'); 
+  }, 500);
+})
+.then(function(res) {
+  console.log('Then returned: ' + res);
+});
+
+----Promise.catch() ------
+
+new Promise(function (resolve, reject) {
+  setTimeout(function () {
+    reject('fail');
+  }, 500);
+})
+  .then (function (result) { console.log(result); })
+  .catch (function(error) { console.log(error); });
+
+----------Promise Methods-------------
+
+--Promise.reject(reason) - Връща обект, който е отхвърлен с посочената причина
+--Promise.resolve(value) - Връща обект, който е разрешен с дадена стойност
+--Promise.all(iterable) - Връща обещание
+Изпълнява се, когато всички обещания са изпълнени
+Отхвърля веднага щом един от тях отхвърли
+--Promise.allSettled(iterable) - 
+Изчакайте, докато всички обещания бъдат уредени
+--Promise.race(iterable) - Връща обещание, което изпълнява или отхвърля, 
+веднага щом едно от обещанията в итератор бъде уредено
+--Promise.prototype.finally()
+
+-----------------------Fetch------------------------
+
+Методът fetch() позволява да се правят мрежови заявки, 
+като замества XMLHttpRequest.
+Fetch използва Promise
+ 
+ -- Fetch Request
+Пример: fetch('./api/some.json')
+  .then(function(response) {…})
+  .catch(function(err) {…})
+
+Отговорът на заявка fetch() е обект Stream
+Четенето на потока става асинхронно
+Когато се извика методът json(), се връща обещание
+Състоянието на отговора се проверява (трябва да е 200),
+преди да се анализира отговорът като JSON
+
+if (response.status !== 200) {
+  // handle error
+}
+response.json()
+  .then(function(data) { console.log(data)})
+
+----GET Request---
+
+fetch('https://api.github.com/users/testnakov/repos')
+  .then((response) => response.json())
+  .then((data) => console.log (data))
+  .catch((error) => console.error(error))
+
+--- POST Request---
+
+fetch('/url', {
+    method: 'post',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(data),
+})
+
+
+-----Chaining Promises------
+fetch('users.json')
+  .then(status)
+  .then(json)
+  .then(function(data) {…})
+  .catch(function(error) {…});
+
+
+
+------------Async / Await---------------
+
+async function asyncCall() {  
+  console.log('calling');  
+  let result = await resolveAfter2Seconds();
+  console.log(result);  
+}
+
+Пример:
+
+async function logFetch(url) {
+  try {
+    const response = 
+       await fetch(url);
+    console.log(
+      await response.text()
+    );
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
+----Error Handling:
+
+async function f() {
+  try {
+    let response = await fetch();
+    let user = await response.json();
+  } catch (err) {
+    // catches errors both in fetch andresponse.json
+    alert(err);
+  }}
+
+горния израз може да се напише така:
+
+async function f() {
+  let response = await fetch();
+}
+f().catch(alert); 
+
+

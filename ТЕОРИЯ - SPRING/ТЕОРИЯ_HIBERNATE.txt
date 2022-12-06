@@ -1,0 +1,88 @@
+------------КОНФИГУРАЦИЯ НА HIBERNATE----hibernate.cfg.xml--------------
+
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration
+        PUBLIC "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+        <property name="hibernate.connection.driver_class">
+            com.mysql.cj.jdbc.Driver
+        </property>
+        <!-- Connection Settings -->
+        <property name="hibernate.connection.url">   jdbc:mysql://localhost:3306/school?createDatabaseIfNotExist=true
+        </property>
+        <property name="hibernate.connection.username">
+            root
+        </property>
+        <property name="hibernate.connection.password">
+            Aa@153759
+        </property>
+        <property name="hbm2ddl.auto">
+            update
+        </property>
+        <!-- List of XML mapping files -->
+        <mapping resource="student.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+
+
+------------КОНФИГУРАЦИЯ НА MAPING CLASS----student.hbm.xml--------------
+
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="entities.Student" table="students">
+        <id name="id" column="id">
+            <generator class="identity" />
+        </id>
+        <property name="name" column="first_name" />
+    </class>
+</hibernate-mapping>
+
+----------------------ВРЪЗКА В MAIN-------------------------
+
+Configuration cfg = new Configuration();
+        cfg.configure();
+        SessionFactory sessionFactory =
+                cfg.buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+----------------------ВКАРВАНЕ НА ОБЕКТ В БАЗАТА-----session.persist----------------
+Student s = new Student();
+        s.setName("Ivan");
+        session.persist(s);
+
+----------------------ВЗЕМАНЕ НА ОБЕКТ ОТ БАЗАТА--session.get---------------
+
+Student student = session.get(Student.class, 1);
+        System.out.println(student.getId()+" "+student.getName());
+
+----------------------ВЗЕМАНЕ НА ВСИЧКИ ОБЕКТИ ОТ БАЗАТА--session.createQuery---------------
+
+List<Student> studentList =
+                session.createQuery("FROM Student",Student.class).list();
+        for (Student student : studentList) {
+            System.out.println(student.getName());
+        }
+
+--------Hibernate Querying Language --------HQL--------------------------------
+
+SELECT ->         "FROM Student"
+SELECT + WHERE -> "FROM Student WHERE name = 'John'"
+SELECT + JOIN ->  "FROM Student AS s
+                  JOIN s.major AS major"
+
+!заявките са с полетата от Java класовете или Java кода, не са с именатат на таблиците!
+
+--------JAVA PERSISTENCE API -----(JPA)--------------------------------
+
+

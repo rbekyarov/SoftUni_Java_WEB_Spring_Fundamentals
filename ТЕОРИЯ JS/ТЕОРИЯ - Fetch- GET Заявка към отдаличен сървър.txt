@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заявка към отдаличен Сървър</title>
+</head>
+<body>
+    <button id="load-btn">Load Data</button>
+    <ul id="list">List of Films:
+        <p></p>
+    </ul>
+    <script>
+        let dataUrl = 'http://localhost:3030/jsonstore/movies'
+        let button = document.getElementById('load-btn');
+        let movieList = document.getElementById('list')
+        button.addEventListener('click', loadData);
+
+        function loadData() {
+            fetch(dataUrl)
+                .then(result => result.json())
+                .then(data => {
+                    Object.values(data)
+                        .forEach(movie => {
+                            let movieE = document.createElement('li');
+                            movieE.textContent = `${movie.title} : ${movie.year}`;
+                            movieList.appendChild(movieE);
+                        })
+                })
+        }
+    </script>
+</body>
+
+</html>

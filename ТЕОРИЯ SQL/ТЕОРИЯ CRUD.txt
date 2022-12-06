@@ -1,0 +1,110 @@
+
+----------КОНКАТЕНАЦИЯ-----------
+SELECT concat(`first_name`,' ',`last_name`) AS 'full_name',
+`job_title` as  'Job Title',
+`id` AS 'No.'
+FROM `employees`;
+
+---------- Елеминиране на дублирани резултати -----------
+SELECT DISTINCT `department_id`
+  FROM `employees`;
+
+
+-----------WHERE клауза ----------------
+SELECT `last_name`, `department_id`
+FROM `employees`
+WHERE `department_id` = 1;
+
+
+-----------Logical Operators ---------------
+SELECT `last_name`, `salary`
+FROM `employees`
+WHERE `salary` <= 20000;
+
+------------УСЛОВНИ ОПЕРАТОРИ --------------------
+
+
+---NOT, OR, AND
+SELECT `last_name` FROM `employees`
+WHERE NOT (`manager_id` = 3 OR `manager_id` = 4);
+
+---BETWEEN
+
+SELECT `last_name`, `salary` FROM `employees`
+WHERE `salary` BETWEEN 20000 AND 22000;
+
+---IN / NOT IN
+
+SELECT `first_name`, `last_name`, `manager_id`
+FROM `employees`
+WHERE `manager_id` IN (109, 3, 16);
+
+
+-------- Смесване на оператори------
+SELECT * FROM employees AS e
+WHERE e.department_id = 4 AND e.salary >= 1000;
+
+
+-------- Сравняване с NULL-----
+= NULL;
+IS NULL;
+IS NOT NULL;
+
+SELECT `last_name`, `manager_id`
+FROM `employees`
+WHERE `manager_id` IS NOT NULL;
+
+-----------СЪЗДАВАНЕ НА VIEWS------------
+
+CREATE VIEW `v_hr_result_set` AS
+SELECT
+CONCAT(`first_name`,' ',`last_name`) AS 'Full Name', `salary`
+FROM `employees` ORDER BY `department_id`;
+SELECT * FROM `v_hr_result_set`;
+
+-----------СЪЗДАВАНЕ НА ТАБЛИЦА ОТ ДРУГА ТАБЛИЦА ЧРЕЗ SELECT-------
+
+CREATE TABLE `customer_contacts`
+AS SELECT `customer_id`, `first_name`, `email`, `phone`
+FROM `customers`;
+
+
+-----------SQL UPDATE -----------
+в update командата задължително участва WHERE Condition
+пример 1:
+UPDATE `employees`
+   SET `last_name` = 'Brown'
+ WHERE `employee_id` = 1;
+
+пример 2:
+UPDATE `employees`
+   SET `salary` = `salary` * 1.10,
+       `job_title` = CONCAT('Senior',' ', `job_title`)
+ WHERE `department_id` = 3;
+
+пример 3:
+UPDATE employees
+SET salary = salary + 100
+WHERE job_title = 'Manager';
+SELECT salary
+FROM employees;
+
+
+
+-----------------Deleting Data--------------
+DELETE FROM `employees`
+WHERE `employee_id` = 1;
+----Delete all rows:
+TRUNCATE TABLE users;
+
+пример:
+DELETE FROM employees
+WHERE department_id = 1
+OR department_id = 2;
+SELECT * FROM employees
+
+
+-------------IF условие в SQL--------------------
+select country_name, country_code,
+IF( currency_code = "EUR" , "Euro ", "Not Euro") as currency from countries
+      условие                 ДА         НЕ
