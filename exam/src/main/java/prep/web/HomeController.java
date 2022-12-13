@@ -19,7 +19,7 @@ public class HomeController {
         if(httpSession.getAttribute("user")==null){
             modelAndView.setViewName("index");
         }else {
-            modelAndView.addObject("items", this.itemService.findAllItems());
+            modelAndView.addObject("ii", this.itemService.findAllItems());
             modelAndView.setViewName("home");
         }
 

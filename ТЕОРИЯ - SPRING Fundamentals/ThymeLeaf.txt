@@ -1,7 +1,22 @@
-------------------
+-------NAMESPASCING---------
 
 <html xmlns:th="http://www.thymeleaf.org">
 
 ----------INCLUDE--------
 
 <th:block th:include="~{/fragments/head}"></th:block>
+
+----------IFSTATEMENT--------
+
+<th:block th:if="${session.isEmpty()}">
+               ......
+            </th:block>
+
+----------BUTTON ACTION--------
+
+th:action="@{/users/register}" method="POST">
+
+----------ENUMERATED LISTING DROPDOWN--------
+
+<option th:each="o :${T(prep.model.entity.CategoryName).values()}"
+     th:text="${o}" th:value="${o}">Shirt</option>

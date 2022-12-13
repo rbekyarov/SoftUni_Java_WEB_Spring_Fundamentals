@@ -38,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemViewModel> findAllItems() {
+        System.out.println();
         return this.itemRepository
                 .findAll()
                 .stream()
@@ -46,8 +47,14 @@ public class ItemServiceImpl implements ItemService {
                             .map(item,ItemViewModel.class);
                     itemViewModel.setImgUrl(String.format("/img/%s-%s.jpg",
                             item.getGender(),item.getCategory().getCategoryName().name()));
+                    System.out.println("N");
                 return itemViewModel;
+
                 })
                 .collect(Collectors.toList());
+
+
+
+
     }
 }

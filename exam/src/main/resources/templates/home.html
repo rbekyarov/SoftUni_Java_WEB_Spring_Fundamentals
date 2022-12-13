@@ -1,6 +1,5 @@
 <!DOCTYPE html >
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
     <th:block th:insert="~{/fragments/head}"></th:block>
 
@@ -13,11 +12,11 @@
 </header>
 <main>
     <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark">Items</span></h1>
-    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark" >Total count of items: 3</span></h1>
+    <h1 class="text-center mt-2"><span class="badge badge-pill badge-dark" >Total count of items: 2</span></h1>
     <hr class="hr-3"/>
     <div class="container-fluid">
         <div class="offers row mx-auto d-flex flex-row justify-content-center">
-            <div  th:each="i : ${items}" th:object="${i}" class="offer card col-sm-6 col-md-3  col-lg-2 m-1 p-0">
+            <div  th:each=" i: ${ii}" th:object="${i}" class="offer card col-sm-6 col-md-3  col-lg-2 m-1 p-0">
                 <a th:href="@{/items/details/(id=*{id})}">
                     <div class="card-img-top-wrapper">
                         <img class="card-img-top" th:src="*{imgUrl}" alt="image">
