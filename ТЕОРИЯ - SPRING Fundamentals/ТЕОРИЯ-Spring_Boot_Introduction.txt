@@ -1,0 +1,24 @@
+
+-----------Inversion of Control------------
+---Traditional Way
+      public class UserServiceImpl implements UserService {
+
+      private UserRepository userRepository = new UserRepositoryImpl();
+
+      }
+
+
+---Dependency Injection
+        @Service
+        public class UserServiceImpl implements UserService {
+
+        @Autowired
+        private UserRepository userRepository;
+        }
+
+
+------------Overall Architecture------------
+
+           Repository  Service  Controller
+Database                                       View
+           Entities    Models/DTO

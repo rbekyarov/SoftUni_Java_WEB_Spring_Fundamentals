@@ -1,0 +1,138 @@
+------------------------------BEAN----------------------------------------
+
+ --Пример Bean от клас Dog
+    *Dog.java
+    public class Dog implements Animal {
+         private String name;
+         public Dog() {}
+         //GETTERS AND SETTERS
+         }
+ --Bean Declaration
+     *MainApplication.java
+     @SpringBootApplication
+     public class MainApplication {
+         …
+         @Bean
+         public Animal getDog(){
+             return new Dog();
+         }
+     }
+----Get Bean from Application Context
+   *MainApplication.java
+  @SpringBootApplication
+  public class MainApplication {
+    public static void main(String[] args) {
+      ApplicationContext context = SpringApplication.run(MainApplication.class, args);
+      Animal dog = context.getBean(Dog.class);
+      System.out.println("DOG: " + dog.getClass().getSimpleName());
+      }
+  }
+
+----Beans Scopes in Spring Framework - Singleton , Prototype, Request,Session
+
+  --Singletone Scope - Контейнерът създава единичен екземпляр на този bean и всички заявки
+   за това име на bean ще върнат един и същ обект, който е кеширан.The default one is Singleton
+         @Bean
+         @Scope("singleton") <- Can be omitted
+         public Student student() {
+          return new Student();
+        }
+
+   --Prototype Scope - Ще връща различно копие всеки път, когато бъде поискано от контейнера
+         @Bean
+         @Scope("prototype")
+         public Student student() {
+             return new Student();
+         }
+
+    --PostConstruct Annotation - Spring извиква методи, анотирани с @PostConstruct само веднъж,
+     точно след инициализацията на bean
+
+          @Component
+          public class DbInit {
+          private final UserRepository userRepository;
+              public DbUnit(UserRepository userRepository)
+      	    { this. userRepository = userRepository;}
+
+          @PostConstruct
+           private void postConstruct() {
+          User admin = new User("admin", "admin password");
+          User normalUser = new User("user", "user password");
+          userRepository.save(admin, normalUser);
+          }
+         }
+
+    --PreDestroy Annotation - Метод, анотиран с @PreDestroy, се изпълнява само веднъж,
+     точно преди Spring да премахне нашия bean от контекста на приложението
+          @Component
+          public class UserRepository {
+
+          private DbConnection dbConnection;
+          @PreDestroy
+          public void preDestroy() {
+          dbConnection.close();
+            }
+          }
+
+     --BeanNameAware уведомява обекта за името на bean, дефинирано в контейнера
+
+          public class MyBeanName implements BeanNameAware {
+              @Override
+              public void setBeanName(String beanName) {
+                  System.out.println(beanName);
+              }
+          }
+          ---------------------------
+          @Configuration
+          public class Config {
+              @Bean (name = "myCustomBeanName")
+              public MyBeanName getMyBeanName() {
+                  return new MyBeanName();
+              }
+          }
+
+
+     ---BeanFactoryAware Interface - BeanFactoryAware се използва за инжектиране на обекта BeanFactory
+     С метода setBeanFactory() присвояваме препратката BeanFactory от IoC контейнера към свойството beanFactory
+
+              public class MyBeanFactory implements BeanFactoryAware {
+              private BeanFactory beanFactory;
+              @Override
+              public void setBeanFactory(BeanFactory beanFactory)throws BeansException {
+              this.beanFactory = beanFactory;}
+              public void getMyBeanName() {
+              MyBeanName myBeanName = beanFactory.getBean(MyBeanName.class);
+              System.out.println(beanFactory.isSingleton("myCustomBeanName"));
+               }
+              }
+
+     --InitializingBean Interface
+     За имплементиран Bean InitializingBean, той ще се изпълнява следPropertiesSet(),
+      след като всички свойства на bean са зададени
+
+              @Component
+              public class InitializingBeanExampleBean implements InitializingBean {
+                  private static final Logger LOG
+                    = Logger.getLogger(InitializingBeanExampleBean.class);
+
+                  @Autowired
+                  private Environment environment;
+
+                  @Override
+                  public void afterPropertiesSet() throws Exception {
+                      LOG.info(Arrays.asList(environment.getDefaultProfiles()));
+                  }
+              }
+
+      ---DisposableBean Interface - За DisposableBean, внедрен в bean, той ще изпълни destroy()
+       след като Spring контейнерът освободи bean
+
+                 @Component
+                 public class Bean2 implements DisposableBean {
+
+                     @Override
+                     public void destroy() throws Exception {
+                         System.out.println(
+                           "Callback triggered - DisposableBean.");
+                     }
+                 }

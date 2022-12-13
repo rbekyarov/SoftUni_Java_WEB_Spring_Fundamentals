@@ -1,0 +1,227 @@
+---------------------------------Spring MVC--------------------------------------
+
+ Request ->  Dispatcher ->   Handler Mapping ->  Controller  -> Service -> Repository -> DB
+              Servlet           Adapter             |
+                                Resolver            |
+                                   |             View Name
+                                   |                |
+                                                    |
+              Response     <-    View       ->    Model
+
+------------------------MVC – Control Flow--------------------------------
+
+                          Browser
+                          Request
+                          Response
+                             |
+                             |
+           Create Model      |        Update View
+  Model          ->       Controller       ->         View
+                 <-                        <-
+
+
+--Spring Controllers -Defined with the @Controller annotation
+ Контролерите могат да съдържат множество действия по различни маршрути
+
+---------------Request Mapping ()---------------
+
+Два варианта - Model или чрез ModelAndView
+         --вариант 1:
+           @RequestMapping("/home")
+           public String home(Model model) {
+              model.addAttribute("message", “Welcome!");
+           return "home-view";
+           }
+
+         --вариант 2:
+           @RequestMapping("/home")
+           public ModelAndView home(ModelAndView mav) {
+              mav.addObject("message", “Welcome!");
+              mav.setViewName("home-view");
+              return mav;
+           }
+Проблемът при използване на @RequestMapping е, че той приема всички видове методи за заявки
+ (get, post, put, delete, head, patch)
+
+---------------@GetMapping---------------
+------ По-лесен начин за създаване на маршрут за GET заявка -@GetMapping
+          пример:
+          -- *CatController.java
+           @Controller
+           public class CatController {
+
+               @GetMapping("/cat")
+               public String getHomeCatPage(){
+                   return "cat-page.html";
+               }
+           }
+          -- *DogController.java
+          @Controller
+          public class DogController {
+
+              @GetMapping("/dog")
+              @ResponseBody
+              public Dog getDogHomePage(){
+                Dog dog = dogService.getBestDog();
+          	return dog;
+              }
+          }
+
+---------------@PostMapping---------------
+        пример:
+          -- *CatController.java
+          @Controller
+          @RequestMapping("/cat")
+          public class CatController {
+              @GetMapping("")
+              public String addCat(){
+                  return "new-cat.html";
+              }
+          }
+        пример:
+          @Controller
+          @RequestMapping("/cat")
+          public class CatController {
+
+               @PostMapping("")
+              public String addCatConfirm(@RequestParam String catName, @RequestParam int catAge){
+                  System.out.println(String.format("Cat Name: %s, Cat Age: %d", catName, catAge));
+                  return "redirect:/cat";
+              }
+          }
+
+----------------Предаване на Aтрибути към изгледа---------------
+
+    --- Passing a String to the view
+        Обектът на модела автоматично ще бъде предаден на изгледа като контекстни променливи
+        Атрибутите могат да бъдат достъпни от Thymeleaf
+
+            @GetMapping("/")
+            public String welcome(Model model) {
+              model.addAttribute("name", "Pesho");
+              return "index";
+            }
+
+    --- Passing a ModelMap object to the view
+
+            @GetMapping("/")
+            public String welcome(ModelMap modelMap) {
+              modelMap.addAttribute("name", "Pesho");
+              return "index";
+            }
+
+    --- Passing a ModelAndView object to the view
+           @GetMapping("/")
+           public ModelAndView welcome(ModelAndView model) {
+             model.addObject("name", "Pesho");
+             model.setViewName("index")
+             return model;
+           }
+
+
+----------------Models and Views---------------
+       @Controller
+        public class DogController {
+
+        @GetMapping("/dog")
+        public ModelAndView getDogHomePage(ModelAndView modelAndView){
+        modelAndView.setViewName("dog-page.html");
+        return modelAndView;
+             }
+           }
+
+----------------Request Parameters---------------
+
+  --- Getting a parameter from the query string
+         GET
+        @GetMapping("/details")
+        public String details(@RequestParam("id") Long id) {
+          ...
+        }
+
+        POST
+        @PostMapping("/register")
+        public String register(@RequestParam("name") String name) {
+          ...
+        }
+
+----------------Request Parameters with Default Value---------------
+     -- Getting a parameter from the query string
+        @GetMapping("/comment")
+        public String comment(@RequestParam(name="author", defaultValue = "Annonymous") String author) {
+          ...
+        }
+
+     --Making parameter optional
+        @GetMapping("/search")
+        public String search(@RequestParam(name="sort",
+        required = false) String sort) {
+          ...
+        }
+
+----------------Path Variable----------------
+
+      @GetMapping("/details/{id}")
+      public String details(@PathVariable("id") Long id) {
+        ...
+      }
+
+
+----------------Form Objects----------------
+Spring автоматично ще се опита да попълни обекти с данни от формуляр
+Имената на полетата за въвеждане трябва да съвпадат с имената на полетата на обекта
+        @PostMapping("/register")
+        public String register(UserDTO userDto) {
+         ...
+        }
+
+
+------------------------Redirecting------------------------
+
+    ---Redirecting after POST request
+
+            @PostMapping("/register")
+            public String register(UserDTO userDto) {
+            ...
+            return "redirect:/login";
+            }
+
+    ---Redirecting with Parameters
+
+            @PostMapping("/register")
+            public String register(UserDTO userDto,
+            RedirectAttributes redirectAttributes) {
+
+              redirectAttributes.addAttribute("errorId", 3);
+              return "redirect:/login";
+            }
+
+    ---Redirecting with Attributes
+
+            @PostMapping("/register")
+            public String register(@ModelAttribute UserDTO userDto,
+            RedirectAttributes redirectAttributes) {
+              ...
+              redirectAttributes.addFlashAttribute("userDto", userDto);
+              return "redirect:/register";
+            }
+
+---------------Inversion of Control--------------
+
+     ---Constructor Injection
+        @Autowired
+        public ControllerA(ServiceA serviceA, ServiceB serviceB, ServiceC serviceC) {
+          this.serviceA = serviceA;
+          this.serviceB = serviceB;
+          this.serviceC = serviceC;
+        }
+
+     ---Setter Injection
+        @Service
+        public class HomeContoller(){
+         //...
+         @Autowired
+         public void setServiceA(ServiceA serviceA) {
+           this.serviceA = serviceA;
+         }
+        }
