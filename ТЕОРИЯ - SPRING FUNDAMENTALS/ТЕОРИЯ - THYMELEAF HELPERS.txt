@@ -1,0 +1,177 @@
+
+-------------------------Date-------------------------
+   ---Custom Format
+         *WhiskeyController.java
+             @GetMapping("/home")
+                public String getHomePage(Model model){
+                 model.addAttribute("myDate", new Date());
+                return "whiskey-home";
+                }
+         *whiskey-home.html
+            <div th:text="${#dates.format(myDate,'yyyy-MMM-dd')}"></div>
+
+   ---Week Name of Day
+          *WhiskeyController.java
+            @GetMapping("/home")
+            public String getHomePage(Model model){
+                model.addAttribute("myDate", new Date());
+                return "whiskey-home";
+            }
+          *whiskey-home.html
+          <div th:text="${#dates.dayOfWeekName(myDate)}"></div>
+
+   ---List Days
+            *WhiskeyController.java
+            @GetMapping("/home")
+              public String getHomePage(Model model){
+                // List of dates -> 2016-12-12, 2017-04-09 -> yyyy-MM-dd
+                model.addAttribute("myDates", myDates);
+                return "whiskey-home";
+              }
+
+             *whiskey-home.html
+             <div th:text="${#dates.listDay(myDates)}"></div>
+
+   ---Get Current Date
+           *WhiskeyController.java
+             @GetMapping("/home")
+             public String getHomePage() {
+                 return "whiskey-home";
+              }
+
+              *whiskey-home.html
+              <div th:text="${#dates.createNow()}"></div>
+
+   ---LocalDate in Thymeleaf
+            *WhiskeyController.java
+              @GetMapping("/home")
+              public String getHomePage(Model model){
+                  model.addAttribute("myDate", LocalDate.now());
+                  return "whiskey-home";
+              }
+              *whiskey-home.html
+              ${#temporals.format(myDate, 'dd-MMM-yyyy')}
+
+          !!!To use LocalDate we need to add new dependency
+                <dependency>
+                      <groupId>org.thymeleaf.extras</groupId>
+                      <artifactId>thymeleaf-extras-java8time</artifactId>
+                      <version>3.0.4.RELEASE</version>
+                </dependency>
+
+
+-------------------------STRING-------------------------
+
+    ---IS EMPTY
+            *WhiskeyController.java
+                @GetMapping("/home")
+                public String getHomePage(Model model) {
+                String whiskeyNull = null;
+                model.addAttribute("whiskey", whiskeyNull);
+                return "whiskey-home";
+              }
+
+             *whiskey-home.html
+               <div th:text="${#strings.isEmpty(whiskey)}"></div>
+             *резултат true
+
+    ---Substring
+            *WhiskeyController.java
+                @GetMapping("/home")
+                public String getHomePage(Model model) {
+                    String whiskey = "Jack Daniels";
+                    model.addAttribute("whiskey", whiskey);
+                    return "whiskey-home";
+                }
+
+             *whiskey-home.html
+               <div th:text="${#strings.substring(whiskey,0,4)}"></div>
+
+             *резултат Jack
+
+    ---Join
+            *WhiskeyController.java
+                @GetMapping("/home")
+                public String getHomePage(Model model) {
+                 model.addAttribute("whiskeys", whiskeys);
+                 // Jack Daniels, Jameson
+                 return "whiskey-home";
+                            }
+
+             *whiskey-home.html
+                <div th:text="${#strings.listJoin(whiskeys,'-')}"></div>
+             *резултат Jack Daniels-Jameson
+
+    ---Capitalize
+
+            *WhiskeyController.java
+                @GetMapping("/home")
+                public String getHomePage(Model model) {
+                    String whiskey = "jameson";
+                    model.addAttribute("whiskey", whiskey);
+                    return "whiskey-home";
+                }
+
+
+             *whiskey-home.html
+               <div th:text="${#strings.capitalize(whiskey)}"></div>
+             *резултат Jameson
+
+
+-------------------------NUMBERS-------------------------
+
+
+     ---Format
+          *MathController.java
+          @GetMapping("/home")
+             public String getHomePage(Model model) {
+                  double num = 3.14159;
+                  model.addAttribute("num", num);
+                  return "home";
+              }
+          *home.html
+            <div th:text="${#numbers.formatDecimal(num,1,2)}"></div>
+            *резултат 3.14
+
+
+     ---Sequence
+          *MathController.java
+                    @GetMapping("/home")
+                    public String getHomePage(Model model) {
+                        return "home";
+                    }
+
+                    *home.html
+                      <span th:each="number: ${#numbers.sequence(0,2)}">
+                          <span th:text="${number}"></span>
+                      </span>
+
+                      *резултат 0 1 2
+
+     ---Aggregates – Sum
+                *MathController.java
+                @GetMapping("/home")
+                public String getHomePage(Model model) {
+                    double[] whiskeyPrices = new double[]{29.23, 21.22,33.50};
+                    model.addAttribute("whiskeyPrices",whiskeyPrices);
+                    return "whiskey-home";
+                }
+
+            *home.html
+              <div th:text="${#aggregates.sum(whiskeyPrices)}
+              *резултат 83.95
+
+
+----------------------Thymeleaf in JavaScript---------------------
+
+            *JSController.java
+              @GetMapping("/js")
+              public String getMapPage(Model model){
+                  String message = "Hi JS!";
+                  model.addAttribute("message", message);
+                  return "page";
+              }
+             *script.js
+             <script th:inline="javascript">
+                let message = [[${message}]];<script>
+

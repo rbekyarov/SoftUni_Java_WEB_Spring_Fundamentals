@@ -1,0 +1,194 @@
+-----------MAVEN--------------
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+
+
+------------Gradle-----------
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+}
+
+
+-----------------Define in html file--------------
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+-----------Tags and Attributes----------------
+
+   --Attributes
+        <p th:text="${user.name}">Some text</p>
+
+  --- Tags
+        <th:block>
+        ...
+       </th:block>
+
+------------Expressions----------------------
+  ---Variable ${...}
+            примери:
+            ${#session.user.name}
+            ${title}
+            ${game.id}
+
+
+  ---Selection Expressions   *{...}
+
+
+  ---Accessing Bean          ${@...}
+
+  ---Link (URL) Expressions  @{...}
+        --използват се за изграждане на URL адреси
+           пример:
+        <a th:href="@{/register}">Register</a>
+
+        --Можете също да подадете параметри на String на заявка
+         <a th:href="@{/details(id=${game.id})}">Details</a>
+
+        --Create dynamic URLs
+        <a th:href="@{/games/{id}/edit(id=${game.id})}">Edit</a>
+
+
+  ---Fragment Expressions    ~{...}
+
+
+-------------If – else----------------
+         <div th:if="${student.passExam}">Show results</div>
+         <div th:unless="${student.passExam}">Not pass</div>
+
+
+---------Switch------------------
+
+        <div th:switch="${user.role}">
+        <p th:case="'admin'">User is an administrator</p>
+        <p th:case="#{roles.manager}">User is a manager</p>
+        </div>
+
+
+-------------Iteration-each-------------
+     --Итерация на колекция
+        <tr th:each="s : ${students}">
+        <td th:text="${s.name}"></td>
+        <td th:text="${s.score}"></td>
+        <td th:text="${s.age}"></td>
+        </tr>
+
+     --Можем да прикрепим обекта към родителския елемент
+        <tr th:each="s : ${students}" th:object="${s}">
+                <td th:text="*{name}"></td>
+                <td th:text="*{score}"></td>
+                <td th:text="*{age}"></td>
+        </tr>
+
+-----------------Appending and prepending-----------------
+
+th:attrappend and th:attrprepend атрибути, които добавят (суфикс) или предварят (префикс) резултата от тяхната оценка
+към съществуващите стойности на атрибута
+      --attrappend
+            <input type="button" value="Play"
+                    class="btn" th:attrappend="class=${' ' + cssStyle}" />
+
+      --th:classappend
+             <li th:classappend="${module == 'home' ? 'active' : ''}">
+
+
+------------------Forms in Thymeleaf------------------
+
+             <form th:action="@{/users}"th:method="post">
+                 <input type="number" name="id"/>
+                 <input type="text" name="name"/>
+                 <button type="submit"/>
+             </form>
+        Можете да имате контролер, който ще приеме обект от даден тип
+               @PostMapping("/user")
+               public ModelAndView register(User user) { ... }
+
+
+-------------------Fragments in Thymeleaf-------------------
+          ---Create class with fragments
+
+              <html xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:th="http://www.thymeleaf.org">
+                <body>
+                  <div th:fragment="copy">
+                    &copy; Spring Team 2021
+                  </div>
+                </body>
+              </html>
+
+         ----Easily include in our home page using one of the th:include or th:replace attributes
+                     <body>
+                                 ...
+                                 <footer th:include="footer::copy"></footer>
+                               	//OR
+                                 <footer th:replace="footer::copy"></footer>
+                                 ...
+                               </body>
+
+         ----Create Fragment without th:fragment
+
+             <th:block>
+               <footer> Spring Team 2020 </footer>
+             </th:block>
+
+         -----Use Fragment
+              ...
+              <th:block th:include="~{/fragments/footer}>	</th:block>
+              ...
+
+
+---------------------Additional Spring Functionalities-------------------------
+
+       ---@ModelAttribute - Когато анотацията се използва на ниво метод, тя показва целта на този метод
+               за добавяне на един или повече атрибути на модела
+               В примера метод добавя атрибут с име съобщение към всички модели, дефинирани в класа на контролера
+
+                             @ModelAttribute
+                             public void addAttributes(Model model) {
+                             	model.addAttribute("message", "Welcome to SoftUni!");
+                             }
+                Когато се използва като аргумент на метод, той показва, че аргументът трябва да бъде извлечен от модела
+                Когато не присъства, първо трябва да се инстанцира и след това да се добави към модела.
+                След като присъстват в модела, полетата за аргументи трябва да бъдат попълнени от всички параметри на заявката, които имат съвпадащи имена.
+                пример:
+                        @RequestMapping(value = "/cars/add",
+                 	        method = RequestMethod.POST)
+                        public String submit(@ModelAttribute("car")Car car) {
+                        // Some code ...
+                        return "carView";
+                        }
+
+       ---@CrossOrigin - маркира анотирания метод или тип като позволяващ кръстосани заявки за произход
+
+                @CrossOrigin(origins = "http://example.com")
+                @RequestMapping("/hello")
+                public String hello() {
+                	return "Hello World!";
+                }
+
+       ---@Qualifier - Използваме @Qualifier заедно с @Autowired, за да предоставим
+          идентификатора или името на (BEAN)компонента
+
+          @Component
+          @Qualifier("bike")
+          class Bike implements Vehicle {
+             private String make;
+             private String model;
+          }
+          @Component
+          @Qualifier("car")
+          class Car implements Vehicle {
+             private String make;
+             private String model;
+             private Integer seats;
+          }
+
+           Ако искаме да получим Bike, трябва да го уточним с добавяне на @Qualifier("bike"),
+            преди да инжектираме Vehicle
+
+                @Autowired
+                Biker(@Qualifier("bike") Vehicle vehicle) {
+                	this.vehicle = vehicle;
+                }
+
+       ---@Primary

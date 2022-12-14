@@ -1,0 +1,89 @@
+
+----------------------Session---------------------------
+ Сесията ще бъде инжектирана от IoC
+  контейнера при извикване
+
+  @GetMapping("/")
+  public String home(HttpSession httpSession) {
+    …
+    httpSession.setAttribute("id", 2);
+    …
+  }
+ По-късно атрибутите на сесията могат да бъдат достъпни от Thymeleaf
+ с помощта на синтаксиса на израза и обекта #session
+
+
+ ------------------Cookie-----------------------
+
+      ---Reading HTTP Cookie - @CookieValue
+            @GetMapping("/")
+            public String readCookie(@CookieValue(value = "username", defaultValue = "Guest") String username) {
+     	    return "login";
+            }
+
+      ---Using the ResponseCookie object
+          ResponseCookie cookie = ResponseCookie.from("username", "pesho")
+              .httpOnly(true)
+              .secure(true)
+              .path("/")
+              .maxAge(60)
+              .domain("softuni.bg")
+              .build();
+          ResponseEntity
+              .ok()
+              .header(HttpHeaders.SET_COOKIE, cookie.toString())
+              .build();
+
+      ----@CookieValue
+               @GetMapping("/change-username")
+               public String setCookie(HttpServletResponse response) {
+                   	// create a cookie
+                   	Cookie cookie = new Cookie("username", "Pesho");
+                   	//add cookie to response
+                   	response.addCookie(cookie);
+                   	return "index";
+               }
+
+
+---------------------------Header-----------------------------------
+
+        ------Reading HTTP Header
+                @GetMapping("/greeting")
+                public ResponseEntity<String> greeting(
+                @RequestHeader("accept-language") String language) {
+                    	// code that uses the language variable
+                    	return new ResponseEntity<String>("greeting", 		HttpStatus.OK);
+                }
+
+
+        ----ResponseStatus
+                @RequestMapping(method = RequestMethod.POST)
+                @ResponseStatus(HttpStatus.CREATED)
+                public void storeEmployee(@RequestBody Employee employee) {
+                    ...
+                }
+
+
+---------------------------Request & Response Body----------------------------
+
+        ---RequestBody - Картографира тялото на HttpRequest към обект на трансфер или домейн,
+         позволявайки автоматично десериализиране на тялото на входящия HttpRequest към Java обекти
+
+            @PostMapping("/students/add")
+            public ResponseEntity postController(
+            @RequestBody StudentAddBindingModel bindingModel){
+            	myService.add(bindingModel);
+            	return ResponseEntity.ok(HttpStatus.OK);
+            }
+
+         ---ResponseBody - Казва на контролер, че върнатият обект автоматично се сериализира
+          в JSON и се предава обратно в обекта HttpResponse
+
+                @GetMapping("/response")
+                @ResponseBody
+                public Exercise getLastEx() {
+                	// Get exercise from service
+                	return exercise;
+                }
+
+
