@@ -6,7 +6,7 @@ let person = {
 };
 
 ----
-const car = {type:"Fiat", model:"500", color:"white"};
+const car = ctype:"Fiat", model:"500", color:"white"};
 
 
 - -----Достъпване:---------

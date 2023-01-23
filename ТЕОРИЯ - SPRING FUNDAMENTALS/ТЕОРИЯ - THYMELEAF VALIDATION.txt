@@ -1,16 +1,16 @@
 ------------Spring Validation & Thymeleaf ------------------
    ---Извършване на просто валидиране на модела и изобразяване на грешки
 
-       public class SomeModel {
-        *SomeModel.java
 
+  ---*SomeModel.java
+       public class SomeModel {
            @NotNull
            @Size(min = 3, max = 10,
             message = "Invalid name")
            private String name;
        }
 
-       *SomeController.java
+  ---*SomeController.java
 
          @Controller
          public class SomeController {
@@ -26,7 +26,7 @@
          	 return "add";
              }
 
-         @PostMapping("/add")
+          @PostMapping("/add")
               public String add (@Valid @ModelAttribute("bindingModel") SomeModel bindingModel, BindingResult bindingResult, RedirectAttributes rAtt) {
                   if(bindingResult.hasErrors()){
                       	rAtt.addFlashAttribute("bindingModel", bindingModel);
@@ -42,7 +42,7 @@
          }
 
 
-      *add.html
+   ---*add.html
 
         <div th:object="${productBindingModel}" >
         	<div class="justify-content-center">
