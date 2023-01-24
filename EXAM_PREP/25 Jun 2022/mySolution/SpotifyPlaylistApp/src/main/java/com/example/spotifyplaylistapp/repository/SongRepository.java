@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
@@ -16,5 +17,6 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     List<Song> getsongsRock();
     @Query("select s from Song as s where s.style.styleName='Jazz'")
     List<Song> getsongsJazz();
+    Optional<Song> findByPerformer(String performer);
 
 }

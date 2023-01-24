@@ -12,4 +12,5 @@ public interface SongService {
     List<Song> getsongsJazz();
 
 
+    boolean findSongByPerformer(String value);
 }

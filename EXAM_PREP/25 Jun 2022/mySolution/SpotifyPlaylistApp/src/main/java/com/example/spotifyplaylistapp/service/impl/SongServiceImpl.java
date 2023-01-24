@@ -1,6 +1,7 @@
 package com.example.spotifyplaylistapp.service.impl;
 
 import com.example.spotifyplaylistapp.model.entity.Song;
+import com.example.spotifyplaylistapp.model.entity.User;
 import com.example.spotifyplaylistapp.repository.SongRepository;
 import com.example.spotifyplaylistapp.service.SongService;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,17 @@ public class SongServiceImpl implements SongService {
     @Override
     public List<Song> getsongsJazz() {
         return songRepository.getsongsJazz();
+    }
+
+    @Override
+    public boolean findSongByPerformer(String value) {
+        Song song = songRepository.findByPerformer(value).orElse(null);
+        if(song != null){
+            return true;
+        }else {
+            return false;
+        }
+
     }
 
 

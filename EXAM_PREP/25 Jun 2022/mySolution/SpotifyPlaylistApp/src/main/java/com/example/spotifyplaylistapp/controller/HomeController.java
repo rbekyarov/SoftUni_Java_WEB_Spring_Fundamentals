@@ -23,19 +23,23 @@ public class HomeController extends BaseController{
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/index")
     public ModelAndView index() {
         if(loggedUser.isLogged()){
-            return super.view("/home");
+            return super.redirect("/home");
+
         }
-        return super.view("/index");
+        return  super.view("/index");
+
 
     }
 
-    @GetMapping("/view/home")
+
+    @GetMapping("/home")
     public ModelAndView home(ModelAndView modelAndView) {
         if (!loggedUser.isLogged()) {
-            return super.view("/index");
+            return super.redirect("/index");
+
         }
        List<Song> songsPop = songService.getSongsPop();
        List<Song> songsRock = songService.getsongsRock();
@@ -47,6 +51,6 @@ public class HomeController extends BaseController{
         List <Song> playlist = userService.getPlaylistOnUser(userid);
         modelAndView.addObject("playlist", playlist);
 
-        return super.view("/view/home","songsPop",songsPop,"songsRock",songsRock,"songsJazz", songsJazz,"playlist", playlist);
+        return super.view("/home","songsPop",songsPop,"songsRock",songsRock,"songsJazz", songsJazz,"playlist", playlist);
     }
 }
