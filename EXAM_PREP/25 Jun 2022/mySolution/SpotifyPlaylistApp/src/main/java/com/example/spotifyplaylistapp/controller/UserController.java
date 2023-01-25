@@ -38,12 +38,13 @@ private final UserService userService;
     }
 
     @PostMapping("/login")
-    public ModelAndView loginConfirm(@Valid  LoginDTO loginDTO, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String loginConfirm(@Valid LoginDTO loginDTO, BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             redirectAttributes
                     .addFlashAttribute("loginDTO", loginDTO)
                     .addFlashAttribute("org.springframework.validation.BindingResult.loginDTO", result);
-            return super.redirect("/login");
+
+            return "redirect:/login";
         }
 
         boolean validCredentials = this.userService.checkCredentials(loginDTO.getUsername(), loginDTO.getPassword());
@@ -52,14 +53,12 @@ private final UserService userService;
             redirectAttributes
                     .addFlashAttribute("loginDTO", loginDTO)
                     .addFlashAttribute("validCredentials", false);
-            return super.redirect("/login");
-
+            return "redirect:/login";
         }
 
         this.userService.login(loginDTO.getUsername());
-        return super.redirect("/home");
+        return "redirect:/home";
     }
-
     @GetMapping("/register")
     public ModelAndView register() {
 
@@ -71,7 +70,7 @@ private final UserService userService;
 }
 
     @PostMapping("/register")
-    public ModelAndView registerConfirm(RegisterDTO registerDTO, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String registerConfirm(@Valid RegisterDTO registerDTO, BindingResult result, RedirectAttributes redirectAttributes) {
         if (!registerDTO.getPassword().equals(registerDTO.getConfirmPassword())) {
             result.addError(
                     new FieldError(
@@ -85,13 +84,14 @@ private final UserService userService;
                     .addFlashAttribute("registerDTO", registerDTO)
                     .addFlashAttribute("org.springframework.validation.BindingResult.registerDTO", result);
 
-            return super.view("/register");
+            return "redirect:/register";
         }
 
         this.userService.register(registerDTO);
-        return super.view("/home");
-
+        return "redirect:/home";
     }
+
+
     @GetMapping("/logout")
     public ModelAndView logout() {
         if (!this.loggedUser.isLogged()) {

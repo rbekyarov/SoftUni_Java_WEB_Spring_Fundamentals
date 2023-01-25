@@ -1,5 +1,7 @@
 package com.example.spotifyplaylistapp.controller;
 
+import com.example.spotifyplaylistapp.model.entity.dto.LoginDTO;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.ModelAndView;
 
 
@@ -35,4 +37,22 @@ public abstract class BaseController {
 
         return modelAndView;
     }
+
+
+//    public ModelAndView view(String view, String loginDTO, LoginDTO loginDTO1, String s1, BindingResult result) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("view", view);
+//        modelAndView.addObject(loginDTO, loginDTO1);
+//        modelAndView.addObject(s1, result);
+//
+//        return modelAndView;
+//    }
+//    public ModelAndView view(String view, String loginDTO, LoginDTO loginDTO1, String s1, Boolean result) {
+//        ModelAndView modelAndView = new ModelAndView();
+//        modelAndView.addObject("view", view);
+//        modelAndView.addObject(loginDTO, loginDTO1);
+//        modelAndView.addObject(s1, result);
+//
+//        return modelAndView;
+//    }
 }
